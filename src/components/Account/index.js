@@ -8,6 +8,7 @@ const AccountPage = () => (
     {authUser => (
       <div>
         <h1>Account: {authUser.email}</h1>
+        <h1>Display Name: {authUser.displayName}</h1>
       </div>
     )}
   </AuthUserContext.Consumer>

@@ -37,7 +37,8 @@ class SignUpFormBase extends Component {
         authUser.user.updateProfile({
           displayName: name
         }).then(() => {
-          this.props.firebase.doCreateUserRole(email);
+          console.log(authUser.user)
+          this.props.firebase.doCreateUserRole(authUser.user.uid, email);
           this.setState({ ...INITIAL_STATE });
           this.props.history.push(ROUTES.LANDING);
 

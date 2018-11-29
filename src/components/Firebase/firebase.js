@@ -36,8 +36,8 @@ class Firebase {
     doPasswordUpdate = password =>
       this.auth.currentUser.updatePassword(password);
 
-    doCreateUserRole = (email) => {
-      this.db.collection("users").add({
+    doCreateUserRole = (uid, email) => {
+      this.user(uid).set({
         email: email,
         role: ['user']
       }).then(function(docRef) {

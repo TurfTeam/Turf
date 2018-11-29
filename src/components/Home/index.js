@@ -43,17 +43,24 @@ class HomePage extends Component {
 const PostList = ({ posts }) => (
     <ul>
         {posts.map(post => (
-            <li key={post.id}>
+            <ul key={post.id}>
+                <div class="card">
+                <div class="card-body">
                 <span>
-                    Content: {post.data().content}
+                <h5 class="card-title"> Content: {post.data().content} </h5>
                 </span>
+                </div>
                 <span>
                     Upvotes: {!!post.data().upvotes ? post.data().upvotes.length : 0}
                 </span>
                 <span>
                     Downvotes: {!!post.data().downvotes ? post.data().downvotes.length : 0}
                 </span>
-            </li>
+                <br></br>
+
+                </div>
+                <br></br>
+            </ul>
         ))}
     </ul>
 );

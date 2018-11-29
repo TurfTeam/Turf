@@ -36,18 +36,14 @@ class Firebase {
     doPasswordUpdate = password =>
       this.auth.currentUser.updatePassword(password);
 
-    doCreateUserRole = (email) => {
-      this.db.collection("users").add({
-        email: email,
-        role: ['user']
-      }).then(function(docRef) {
-        console.log("Document written with ID: ", docRef.id);
+    doGetUserRole_uid = (uid) => {
+      this.db.collection("users").doc(uid)
+      .get()
+      .then(function(doc) {
+          localStorage.setItem('r', JSON.stringify(doc.data().role.length));
+          console.log(localStorage.getItem('r'));
       })
-      .catch(function(error) {
-        console.error("Error adding document: ", error);
-      });
     }
-
     doGetUserRole = (email) => {
       this.db.collection("users").where("email", "==", email)
       .get()

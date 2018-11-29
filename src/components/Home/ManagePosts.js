@@ -31,10 +31,11 @@ class ManagePostsPage extends Component {
         // this.props.firebase.posts().off();
     }
 
-    onDelete(postId){
-      this.state.posts.splice(this.state.posts.indexOf(postId),1);
+    onDelete(post){
+      console.log("post index: ",this.state.posts.indexOf(post));
+      this.state.posts.splice(this.state.posts.indexOf(post),1);
       this.setState(this.state);
-      this.props.firebase.doPostRemove(postId);
+      this.props.firebase.doPostRemove(post);
     }
 
     render() {
@@ -53,7 +54,7 @@ class ManagePostsPage extends Component {
                         <span>
                             Downvotes: {!!post.data().downvotes ? post.data().downvotes.length : 0}
                         </span>
-                        <button onClick={() => {this.onDelete(post.id)}}>Remove</button>
+                        <button onClick={() => {this.onDelete(post)}}>Remove</button>
                     </li>
                 ))}
             </ul>

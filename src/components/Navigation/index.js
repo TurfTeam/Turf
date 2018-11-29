@@ -25,6 +25,11 @@ const NavigationAuth = () => (
         <Link to={ROUTES.MANAGE_POSTS}>Manage Posts</Link>
         </li>
       ) : null}
+      {localStorage.getItem('r') === '2' ? (
+        <li>
+        <Link to={ROUTES.MANAGE_USERS}>Manage Users</Link>
+        </li>
+      ) : null}
     <li>
       <SignOutButton />
     </li>

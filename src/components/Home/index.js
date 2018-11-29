@@ -33,7 +33,7 @@ class HomePage extends Component {
     render() {
         const { posts } = this.state;
         return (
-            <div>
+            <div class="container">
                 <PostList posts={posts} />
             </div>
         )
@@ -41,30 +41,22 @@ class HomePage extends Component {
 }
 
 const PostList = ({ posts }) => (
-    <ul>
+    <div>
         {posts.map(post => (
-            <ul key={post.id}>
-            <div class="container-fluid mt-4">
-            <div class="col-auto mb-3">
-                <div class="card">
+            <div class="card mt-3" key={post.id}>
                 <div class="card-body">
-                <span>
-                <h5 class="card-title"> Content: {post.data().content} </h5>
-                </span>
-
-                <span>
-                    Upvotes: {!!post.data().upvotes ? post.data().upvotes.length : 0}
-                </span>
-                <span>
-                    Downvotes: {!!post.data().downvotes ? post.data().downvotes.length : 0}
-                </span>
+                    <div class="row">
+                        <div class="col-sm"> {post.data().content} </div>
+                        <div class="col-sm">
+                            <div class="text-right">
+                                {!!post.data().downvotes && !!post.data().upvotes ? post.data().downvotes.length - post.data().downvotes.length : 0}
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                </div>
-                </div>
-                </div>
-            </ul>
+            </div>
         ))}
-    </ul>
+    </div>
 );
 
 const condition = authUser => !!authUser;

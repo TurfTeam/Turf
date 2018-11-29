@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
-
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
-
+import { Button } from 'reactstrap';
 const SignUpPage = () => (
+  <center>
   <div>
-    <h1>SignUp</h1>
+    <h1>Sign up</h1>
     <SignUpForm />
   </div>
+  </center>
 );
 
 const INITIAL_STATE = {
@@ -81,20 +82,26 @@ class SignUpFormBase extends Component {
 
     return (
       <form onSubmit={this.onSubmit}>
+            <center>
+        <div class="form-group">
          <input
           name="name"
           value={name}
           onChange={this.onChange}
-          type="text"
+          type="name"
           placeholder="Full Name"
         />
+        </div>
+        <div class="form-group">
         <input
           name="email"
           value={email}
           onChange={this.onChange}
-          type="text"
+          type="email"
           placeholder="Email Address"
         />
+        </div>
+        <div class="form-group">
         <input
           name="password"
           value={password}
@@ -102,6 +109,8 @@ class SignUpFormBase extends Component {
           type="password"
           placeholder="Password"
         />
+        </div>
+        <div class="form-group">
         <input
           name="passwordConfirmation"
           value={passwordConfirmation}
@@ -109,9 +118,13 @@ class SignUpFormBase extends Component {
           type="password"
           placeholder="Confirm Password"
         />
-        <button disabled={isInvalid} type="submit">
+        </div>
+        </center>
+        <center>
+        <Button disabled={isInvalid} type="submit">
           Sign Up
-        </button>
+        </Button>
+        </center>
         {error && <p>{error.message}</p>}
       </form>
     );

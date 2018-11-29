@@ -29,7 +29,10 @@ class Firebase {
     doSignInWithEmailAndPassword = (email, password) =>
         this.auth.signInWithEmailAndPassword(email, password);
 
-    doSignOut = () => this.auth.signOut();
+    doSignOut = () => {
+      this.auth.signOut();
+      ;localStorage.setItem('r', JSON.stringify(0));
+    }
 
     doPasswordReset = email => this.auth.sendPasswordResetEmail(email);
 
@@ -41,7 +44,8 @@ class Firebase {
         email: email,
         role: ['user']
       }).then(function(docRef) {
-        console.log("Document written with ID: ", docRef.id);
+        localStorage.setItem('r', JSON.stringify(1));
+        //console.log("Document written with ID: ", docRef.id);
       })
     }
     doGetUserRole = (email) => {
@@ -50,7 +54,7 @@ class Firebase {
       .then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) {
           localStorage.setItem('r', JSON.stringify(doc.data().role.length));
-          console.log(localStorage.getItem('r'));
+          console.log("THIS THE ROLE: ",localStorage.getItem('r'));
         });
       })
       .catch(function(error) {

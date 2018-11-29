@@ -1,9 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { withFirebase } from '../Firebase';
 
 import * as ROUTES from '../../constants/routes';
 import { AuthUserContext } from '../Session';
 import SignOutButton from '../SignOut';
+
+
 
 const Navigation = () => (
   <div>
@@ -20,18 +23,9 @@ const NavigationAuth = () => (
     <li>
       <Link to={ROUTES.HOME}>Home</Link>
     </li>
-      {localStorage.getItem('r') === '2' ? (
-        <li>
-        <Link to={ROUTES.MANAGE_POSTS}>Manage Posts</Link>
-        </li>
-      ) : null}
-      {localStorage.getItem('r') === '2' ? (
-        <li>
-        <Link to={ROUTES.MANAGE_USERS}>Manage Users</Link>
-        </li>
-      ) : null}
+    <AuthUserContext.Consumer>{authUser => authUser.email === "admins@turf.com" ? <NavigationAdmin /> : null}</AuthUserContext.Consumer>
     <li>
-      <SignOutButton />
+    <SignOutButton />
     </li>
   </ul>
 );
@@ -43,6 +37,17 @@ const NavigationNonAuth = () => (
     </li>
     <li>
       <Link to={ROUTES.SIGN_IN}>Sign In</Link>
+    </li>
+    </ul>
+);
+
+const NavigationAdmin = () => (
+  <ul>
+    <li>
+      <Link to={ROUTES.MANAGE_POSTS}>MP</Link>
+    </li>
+    <li>
+      <Link to={ROUTES.MANAGE_USERS}>MU</Link>
     </li>
   </ul>
 );

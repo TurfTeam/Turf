@@ -11,7 +11,7 @@ import AccountPage from '../Account';
 import HomePage from '../Home';
 import CreatePost from '../CreatePost';
 import ManagePostsPage from '../Home/ManagePosts';
-import ManageUsersPage from '../Home/ManagePosts';
+import ManageUsersPage from '../Home/ManageUsers';
 
 import * as ROUTES from '../../constants/routes';
 import { withAuthentication } from '../Session';

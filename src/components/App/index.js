@@ -9,6 +9,7 @@ import SignUpPage from '../SignUp';
 import SignInPage from '../SignIn';
 import AccountPage from '../Account';
 import HomePage from '../Home';
+import CreatePost from '../CreatePost';
 import ManagePostsPage from '../Home/ManagePosts';
 import ManageUsersPage from '../Home/ManageUsers';
 
@@ -26,6 +27,7 @@ const App = () => (
       <Route exact path={ROUTES.SIGN_IN} component={SignInPage} />
       <Route exact path={ROUTES.ACCOUNT} component={AccountPage} />
       <Route exact path={ROUTES.HOME} component={HomePage} />
+      <Route exact path={ROUTES.NEW_POST} component={CreatePost} />
       <Route exact path={ROUTES.MANAGE_POSTS} component={ManagePostsPage} />
       <Route exact path={ROUTES.MANAGE_USERS} component={ManageUsersPage} />
     </div>

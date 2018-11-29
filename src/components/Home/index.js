@@ -44,22 +44,24 @@ const PostList = ({ posts }) => (
     <ul>
         {posts.map(post => (
             <ul key={post.id}>
+            <div class="container-fluid mt-4">
+            <div class="col-auto mb-3">
                 <div class="card">
                 <div class="card-body">
                 <span>
                 <h5 class="card-title"> Content: {post.data().content} </h5>
                 </span>
-                </div>
+
                 <span>
                     Upvotes: {!!post.data().upvotes ? post.data().upvotes.length : 0}
                 </span>
                 <span>
                     Downvotes: {!!post.data().downvotes ? post.data().downvotes.length : 0}
                 </span>
-                <br></br>
-
                 </div>
-                <br></br>
+                </div>
+                </div>
+                </div>
             </ul>
         ))}
     </ul>

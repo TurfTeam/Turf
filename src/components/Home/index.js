@@ -7,7 +7,7 @@ import { withFirebase } from '../Firebase';
 class HomePage extends Component {
     constructor(props) {
       super(props);
-      
+
       this.state = {
           loading: false,
           posts: [],
@@ -16,6 +16,7 @@ class HomePage extends Component {
 
     componentDidMount() {
         this.setState({ loading: true });
+        console.log("state: ", this.state);
 
         this.props.firebase.posts().get().then((querySnapshot) => {
             this.setState({

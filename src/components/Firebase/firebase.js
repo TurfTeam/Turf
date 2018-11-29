@@ -48,6 +48,28 @@ class Firebase {
       });
     }
 
+    doGetUserRole = (email) => {
+      this.db.collection("users").where("email", "==", email)
+      .get()
+      .then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+          localStorage.setItem('r', JSON.stringify(doc.data().role.length));
+          console.log(localStorage.getItem('r'));
+        });
+      })
+      .catch(function(error) {
+        console.log("Error getting documents: ", error);
+      });
+    }
+
+    doPostRemove = (postId) => {
+      this.db.collection("posts").doc(postId).delete().then(function() {
+        console.log("Post successfully deleted.");
+      }).catch(function(error) {
+        console.error("Error removing document: ", error);
+      });
+    }
+
     user = uid => this.db.collection(`users`).doc(uid);
     users = () => this.db.collection(`users`);
 

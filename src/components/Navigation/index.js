@@ -22,7 +22,7 @@ const NavigationAuth = () => (
     </li>
       {localStorage.getItem('r') === '2' ? (
         <li>
-        <Link to={ROUTES.HOME}>Manage Posts</Link>
+        <Link to={ROUTES.MANAGE_POSTS}>Manage Posts</Link>
         </li>
       ) : null}
     <li>

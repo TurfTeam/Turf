@@ -4,3 +4,4 @@ export const LANDING = '/';
 export const ACCOUNT = '/account';
 export const ADMIN = '/admin';
 export const HOME = '/home';
+export const NEW_POST = '/new';

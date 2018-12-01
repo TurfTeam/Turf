@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { withFirebase } from '../Firebase';
 
 import * as ROUTES from '../../constants/routes';
@@ -9,19 +9,21 @@ import SignOutButton from '../SignOut';
 
 
 const Navigation = () => (
-  <div>
+  <nav className="nav-wrapper grey darken-2">
+  <div className="container">
     <AuthUserContext.Consumer>
       {authUser =>
         authUser ? <NavigationAuth /> : <NavigationNonAuth />
       }
     </AuthUserContext.Consumer>
   </div>
+  </nav>
 );
 
 const NavigationAuth = () => (
   <ul>
     <li>
-      <Link to={ROUTES.HOME}>Home</Link>
+      <NavLink to={ROUTES.HOME}>Home</NavLink>
     </li>
     <AuthUserContext.Consumer>{authUser => authUser.email === "admins@turf.com" ? <NavigationAdmin /> : null}</AuthUserContext.Consumer>
     <li>
@@ -33,10 +35,10 @@ const NavigationAuth = () => (
 const NavigationNonAuth = () => (
   <ul>
     <li>
-      <Link to={ROUTES.LANDING}>Landing</Link>
+      <NavLink to={ROUTES.LANDING}>Landing</NavLink>
     </li>
     <li>
-      <Link to={ROUTES.SIGN_IN}>Sign In</Link>
+      <NavLink to={ROUTES.SIGN_IN}>Sign In</NavLink>
     </li>
     </ul>
 );
@@ -44,10 +46,10 @@ const NavigationNonAuth = () => (
 const NavigationAdmin = () => (
   <ul>
     <li>
-      <Link to={ROUTES.MANAGE_POSTS}>MP</Link>
+      <NavLink to={ROUTES.MANAGE_POSTS}>Manage Posts</NavLink>
     </li>
     <li>
-      <Link to={ROUTES.MANAGE_USERS}>MU</Link>
+      <NavLink to={ROUTES.MANAGE_USERS}>Manage Users</NavLink>
     </li>
   </ul>
 );

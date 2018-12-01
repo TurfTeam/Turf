@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { compose } from 'recompose';
 import { Container, Row, Col, Collapse } from 'reactstrap';
-import { Card, Button, CardText, CardBody } from 'reactstrap';
-import { Glyphicon } from 'react-bootstrap';
+import { Card, Button, CardText, CardBody, Glyphicon } from 'reactstrap';
 
 import { withAuthorization } from '../Session';
 import { withFirebase } from '../Firebase';
@@ -87,31 +86,35 @@ class HomePage extends Component {
                     {post.data().content}
                   </Col>
                   <Col xs="1">
-                  <Glyphicon glyph="comment" onClick={index => this.toggle(post.id)}></Glyphicon>
-
+                    <span onClick={index => this.toggle(post.id)}>
+                        <i className="fas fa-comment"></i>
+                    </span>
                   </Col>
                   <Col xs="1">
-                  <Glyphicon glyph="exclamation-sign" onClick={() => {this.props.firebase.doPostComment(post.id, "YES", JSON.parse(localStorage.getItem("authUser")).uid)}}></Glyphicon>
+                    <span onClick={() => {this.props.firebase.doPostComment(post.id, "YES", JSON.parse(localStorage.getItem("authUser")).uid)}}>
+                        <i className="fas fa-exclamation-circle"></i>
+                    </span>
                   </Col>
-                  <Col xs="1">
-                  <Glyphicon glyph="thumbs-up" onClick={() => {this.props.firebase.doPostComment(post.id, "YES", JSON.parse(localStorage.getItem("authUser")).uid)}}></Glyphicon>
-                  <Glyphicon glyph="thumbs-down" onClick={() => {this.props.firebase.doPostComment(post.id, "YES", JSON.parse(localStorage.getItem("authUser")).uid)}}></Glyphicon>
-
-                  </Col>
-                  <Col xs="1">
-                      <div className="text-right">
+                  <Col xs="2">
+                    <span onClick={() => {this.props.firebase.doPostComment(post.id, "YES", JSON.parse(localStorage.getItem("authUser")).uid)}}>
+                        <i className="fas fa-chevron-up"></i>
+                    </span>
+                    <span className="text-right score">
                         {!!post.data().downvotes && !!post.data().upvotes ? post.data().downvotes.length - post.data().downvotes.length : 0}
-                      </div>
+                    </span>
+                    <span onClick={() => {this.props.firebase.doPostComment(post.id, "YES", JSON.parse(localStorage.getItem("authUser")).uid)}}>
+                        <i className="fas fa-chevron-down"></i>
+                    </span>
                   </Col>
                   <Collapse isOpen={this.state.collapse[post.id]}>
-                  <Card>
-                  <CardBody>
-                  Anim pariatur cliche reprehenderit,
-                  enim eiusmod high life accusamus terry richardson ad squid. Nihil
-                  anim keffiyeh helvetica, craft beer labore wes anderson cred
-                  nesciunt sapiente ea proident.
-                  </CardBody>
-                  </Card>
+                    <Card>
+                        <CardBody>
+                        Anim pariatur cliche reprehenderit,
+                        enim eiusmod high life accusamus terry richardson ad squid. Nihil
+                        anim keffiyeh helvetica, craft beer labore wes anderson cred
+                        nesciunt sapiente ea proident.
+                        </CardBody>
+                    </Card>
                   </Collapse>
               </Row>
           </CardBody>

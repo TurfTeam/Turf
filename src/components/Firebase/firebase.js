@@ -93,6 +93,21 @@ class Firebase {
         });
       }
 
+      doPostComment = (pid, comment, uid) => {
+        this.db.collection("comments").doc()
+        .set({
+          content: comment,
+          pid: pid,
+          uid: uid
+        })
+        .then(function() {
+          console.log("POSTED");
+        })
+        .catch(function(error) {
+          console.error("Error adding comment: ",error);
+        });
+      }
+
     user = uid => this.db.collection(`users`).doc(uid);
     users = () => this.db.collection(`users`);
 

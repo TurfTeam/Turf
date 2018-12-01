@@ -11,7 +11,9 @@ import {
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
-  DropdownItem } from 'reactstrap';
+  DropdownItem,
+  Badge,
+  Button } from 'reactstrap';
 import { withFirebase } from '../Firebase';
 
 import * as ROUTES from '../../constants/routes';
@@ -54,11 +56,19 @@ export default class Navigation extends React.Component {
 
 const NavigationAuth = () => (
   <Nav className="ml-auto" navbar>
-    <AuthUserContext.Consumer>{authUser => authUser.email === "admins@turf.com" ? <><NavigationAdminManagePosts /> <NavigationAdminManageUsers /></> : null}</AuthUserContext.Consumer>
+    <AuthUserContext.Consumer>{authUser => authUser.email === "admins@turf.com" ? <><NavigationAdminManagePosts /> <NavigationAdminManageUsers /></> : <NavigationNotifications />}</AuthUserContext.Consumer>
     <NavItem>
       <SignOutButton />
     </NavItem>
   </Nav>
+);
+
+const NavigationNotifications = () => (
+  <div>
+        <Button color="primary" outline>
+          Notifications <Badge color="secondary">4</Badge>
+        </Button>
+      </div>
 );
 
 const NavigationNonAuth = () => (

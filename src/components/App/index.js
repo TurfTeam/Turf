@@ -21,6 +21,8 @@ const App = () => (
     <div>
       <Navigation />
 
+      <br />
+
       <Route exact path={ROUTES.SIGN_UP} component={SignUpPage} />
       <Route exact path={ROUTES.SIGN_IN} component={SignInPage} />
       <Route exact path={ROUTES.ACCOUNT} component={AccountPage} />

@@ -9,7 +9,7 @@ import SignOutButton from '../SignOut';
 
 
 const Navigation = () => (
-  <nav className="nav-wrapper grey darken-2">
+  <nav className="navbar navbar-default">
   <div className="container">
     <AuthUserContext.Consumer>
       {authUser =>

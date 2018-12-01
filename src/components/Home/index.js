@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { compose } from 'recompose';
 import { Container, Row, Col, Collapse } from 'reactstrap';
-import { Card, Button, CardText, CardBody } from 'reactstrap';
+import { Card, Button, CardText, CardBody, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 import { Glyphicon } from 'react-bootstrap';
 
 import { withAuthorization } from '../Session';
@@ -15,12 +15,16 @@ class HomePage extends Component {
           loading: false,
           posts: [],
           collapse: [],
-          comments: []
+          comments: [],
+          newComments: []
       };
     }
 
     toggle(index) {
       console.log(this.state.collapse);
+      this.state.newComments[index] = '';
+      console.log(index);
+      console.log(this.state.newComments[index]);
       this.state.collapse[index] = !this.state.collapse[index];
       console.log(this.state.collapse);
       this.setState(this.state);
@@ -43,12 +47,7 @@ class HomePage extends Component {
               this.props.firebase.db.collection("comments").where("pid", "==", doc.id)
               .get()
               .then(function(commentsList){
-                var postComment = {
-                  pid: doc.id,
-                  commentsList: commentsList.docs
-                }
-
-                comments.push(postComment);
+                comments[doc.id] = commentsList.docs;
               });
 
               if(count === querySnapshot.docs.length){
@@ -67,6 +66,27 @@ class HomePage extends Component {
         // this.props.firebase.posts().off();
     }
 
+    onSubmit = event => {
+
+    }
+
+    onChange = event => {
+      console.log(event);
+      console.log(event.target.name);
+      console.log(event.target.value);
+
+      //this.setState({ [event.target.name]: event.target.value });
+    };
+
+    onChangeComment = (pid, event) => {
+      console.log(pid);
+      this.state.newComments[pid] = event.target.value;
+      this.setState({ [this.state.newComments] : this.state.newComments});
+      console.log(this.state.newComments[pid]);
+      console.log(event.target.name);
+      console.log(event.target.value);
+    }
+
     render() {
         const { posts } = this.state;
         return (
@@ -79,6 +99,7 @@ class HomePage extends Component {
     }
 
     createPostRender(post, index){
+      const comment = this.state.newComments[post.id];
       return (
       <Card className="card mt-3" key={post.id} id={post.id}>
           <CardBody>
@@ -104,14 +125,26 @@ class HomePage extends Component {
                       </div>
                   </Col>
                   <Collapse isOpen={this.state.collapse[post.id]}>
-                  <Card>
-                  <CardBody>
-                  Anim pariatur cliche reprehenderit,
-                  enim eiusmod high life accusamus terry richardson ad squid. Nihil
-                  anim keffiyeh helvetica, craft beer labore wes anderson cred
-                  nesciunt sapiente ea proident.
-                  </CardBody>
-                  </Card>
+                  <hr />
+                  <Row>
+                  <Col xs="12">
+                    <Container>
+                    <Card>
+                    <CardBody>
+                    <Form>
+                      <FormGroup>
+                        <Label for="comment">Add Comment</Label>
+                        <Input type="textarea" name="comment" value={this.state.newComments[post.id]} onChange={this.onChangeComment.bind(this, post.id)} placeholder="Comment" />
+                      </FormGroup>
+
+                      <Button onClick={() => this.props.firebase.doPostComment(post.id, this.state.newComments[post.id], JSON.parse(localStorage.getItem("authUser")).uid)}>Submit</Button>
+                    </Form>
+                    </CardBody>
+                    </Card>
+                    </Container>
+
+                    </Col>
+                    </Row>
                   </Collapse>
               </Row>
           </CardBody>

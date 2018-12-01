@@ -83,6 +83,16 @@ class Firebase {
         });
       }
 
+      doRestoreUserPrivileges = (user) => {
+        this.db.collection("blacklist").doc(user.id).delete()
+        .then(function() {
+          console.log("NO BLAAAAAACKLIST");
+        })
+        .catch(function(error){
+          console.error("Error deleting document: ",error);
+        });
+      }
+
     user = uid => this.db.collection(`users`).doc(uid);
     users = () => this.db.collection(`users`);
 

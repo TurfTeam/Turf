@@ -73,17 +73,27 @@ class ManageUsersPage extends Component {
       this.props.firebase.doBlackListUser(user);
     }
 
+    onRestorePrivileges(user){
+      console.log("UID: ",user);
+      console.log("YO");
+      console.log("index: ",this.state.users.indexOf(user));
+      this.state.blacklisted.splice(this.state.blacklisted.indexOf(user),1);
+      this.state.users.push(user);
+      this.setState(this.state);
+      this.props.firebase.doRestoreUserPrivileges(user);
+    }
+
     render() {
     const { users, blacklisted } = this.state;
 
     return (
       <div>
-        <h1>Admin</h1>
+        <h1>Current Users</h1>
         <ul>
     {users.map(user => (
       <li key={user.id}>
         <span>
-          <strong>ID:</strong> {user.data().uid}
+          <strong>ID:</strong> {user.id}
         </span>
         <span>
           <strong>E-Mail:</strong> {user.data().email}
@@ -100,7 +110,7 @@ class ManageUsersPage extends Component {
   {blacklisted.map(user => (
     <li key={user.id}>
       <span>
-        <strong>ID:</strong> {user.data().uid}
+        <strong>ID:</strong> {user.id}
       </span>
       <span>
         <strong>E-Mail:</strong> {user.data().email}
@@ -108,7 +118,7 @@ class ManageUsersPage extends Component {
       <span>
         <strong>Role:</strong> {user.data().role}
       </span>
-      <button onClick={() => {}}>Restore Privileges</button>
+      <button onClick={() => {this.onRestorePrivileges(user)}}>Restore Privileges</button>
     </li>
   ))}
   </ul>

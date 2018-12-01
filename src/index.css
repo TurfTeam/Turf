@@ -13,19 +13,19 @@ code {
     monospace;
 }
 input[type=password] {
-  width: 25%;
+  width: 325px;
   padding: 12px 20px;
   margin: 8px 0;
   box-sizing: border-box;
 }
 input[type=email] {
-  width: 25%;
+  width: 325px;
   padding: 12px 20px;
   margin: 8px 0;
   box-sizing: border-box;
 }
 input[type=name] {
-  width: 25%;
+  width: 325px;
   padding: 12px 20px;
   margin: 8px 0;
   box-sizing: border-box;

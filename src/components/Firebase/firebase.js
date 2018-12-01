@@ -62,8 +62,8 @@ class Firebase {
       });
     }
 
-    doPostRemove = (postId) => {
-      this.db.collection("posts").doc(postId).delete().then(function() {
+    doPostRemove = (post) => {
+      this.db.collection("posts").doc(post.id).delete().then(function() {
         console.log("Post successfully deleted.");
       }).catch(function(error) {
         console.error("Error removing document: ", error);

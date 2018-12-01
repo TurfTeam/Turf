@@ -10,65 +10,71 @@ class ManageUsersPage extends Component {
 
       this.state = {
           loading: false,
-          users: []
+          users: [],
+          blacklisted: []
       };
     }
 
     componentDidMount() {
       this.setState({ loading: true });
 
-      this.props.firebase.users()
+      this.props.firebase.db.collection("blacklist")
       .get()
-      .then((querySnapshot) => {
-          this.setState({
-              loading: false,
-              users: querySnapshot.docs,
-          })
-
-          console.log(this.state.users);
-          console.log(this.state.users[0].id);
-          console.log(this.state.users[0].data().email);
-      });
-      /*this.props.firebase.users().on('value', snapshot => {
-        const usersObject = snapshot.val();
-
-        const usersList = Object.keys(usersObject).map(key => ({
-          ...usersObject[key],
-          uid: key,
-        }));
-
-        this.setState({
-          users: usersList,
-          loading: false,
+      .then((querySnapshot1) => {
+        var blacklistIDs = [];
+        querySnapshot1.docs.forEach(doc => {
+          blacklistIDs.push(doc.id);
         });
-
-        console.log(this.state.users);
-      });*/
-
-        /*this.props.firebase.posts().where("reported", "==", true)
+        this.props.firebase.users()
         .get()
         .then((querySnapshot) => {
-            this.setState({
-                loading: false,
-                posts: querySnapshot.docs,
-            })
-        });*/
-    }
+          var users = [];
+          var blacklisted = [];
+          var count = 0;
+            querySnapshot.docs.forEach(doc => {
+              count++;
+              console.log("doc: ",doc.id);
+              if(blacklistIDs.indexOf(doc.id) === -1){
+                console.log("doc: ",doc.data().email);
+                console.log(blacklistIDs.indexOf(doc.id));
+                users.push(doc);
+              }
+              else{
+                blacklisted.push(doc);
+              }
+
+              if(count === querySnapshot.docs.length){
+                this.setState({
+                  users: users,
+                  blacklisted: blacklisted,
+                  loading: false
+                });
+              }
+            });
+            });
+            /*
+
+            console.log(this.state.users);
+            console.log(this.state.users[0].id);
+            console.log(this.state.users[0].data().email);*/
+        });
+      }
 
     componentWillUnmount() {
     }
 
-    onBlacklist(u){
-      console.log("UID: ",u);
+    onBlacklist(user){
+      console.log("UID: ",user);
       console.log("YO");
-      console.log("index: ",this.state.users.indexOf(u));
-      this.state.users.splice(this.state.users.indexOf(u),1);
+      console.log("index: ",this.state.users.indexOf(user));
+      this.state.users.splice(this.state.users.indexOf(user),1);
+      this.state.blacklisted.push(user);
       this.setState(this.state);
-      //this.props.firebase.doPostRemove(postId);
+      this.props.firebase.doBlackListUser(user);
     }
 
     render() {
-    const { users } = this.state;
+    const { users, blacklisted } = this.state;
 
     return (
       <div>
@@ -88,6 +94,23 @@ class ManageUsersPage extends Component {
         <button onClick={() => {this.onBlacklist(user)}}>Blacklist</button>
       </li>
     ))}
+  </ul>
+  <h1> Blacklisted Users </h1>
+  <ul>
+  {blacklisted.map(user => (
+    <li key={user.id}>
+      <span>
+        <strong>ID:</strong> {user.data().uid}
+      </span>
+      <span>
+        <strong>E-Mail:</strong> {user.data().email}
+      </span>
+      <span>
+        <strong>Role:</strong> {user.data().role}
+      </span>
+      <button onClick={() => {}}>Restore Privileges</button>
+    </li>
+  ))}
   </ul>
       </div>
     );

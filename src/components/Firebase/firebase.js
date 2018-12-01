@@ -70,6 +70,19 @@ class Firebase {
       });
     }
 
+      doBlackListUser = (user) => {
+        this.db.collection("blacklist").doc(user.id).set({
+          email: user.data().email,
+          role: user.data().role
+        })
+        .then(function() {
+          console.log("BLAAAAACKLIST");
+        })
+        .catch(function(error){
+          console.error("Error writing document: ",error);
+        });
+      }
+
     user = uid => this.db.collection(`users`).doc(uid);
     users = () => this.db.collection(`users`);
 

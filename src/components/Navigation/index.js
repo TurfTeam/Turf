@@ -1,5 +1,17 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+//import { NavLink } from 'react-router-dom';
+import {
+  Collapse,
+  Navbar,
+  NavbarToggler,
+  NavbarBrand,
+  Nav,
+  NavItem,
+  NavLink,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem } from 'reactstrap';
 import { withFirebase } from '../Firebase';
 
 import * as ROUTES from '../../constants/routes';
@@ -7,51 +19,93 @@ import { AuthUserContext } from '../Session';
 import SignOutButton from '../SignOut';
 
 
+export default class Navigation extends React.Component {
+  constructor(props) {
+    super(props);
 
-const Navigation = () => (
-  <nav className="navbar navbar-default">
+    this.toggle = this.toggle.bind(this);
+    this.state = {
+      isOpen: false
+    };
+  }
+  toggle() {
+    this.setState({
+      isOpen: !this.state.isOpen
+    });
+  }
+  render() {
+    return (
+      <div>
+        <Navbar color="light" light expand="md">
+          <NavbarBrand href={ROUTES.HOME}>Turf</NavbarBrand>
+          <NavbarToggler onClick={this.toggle} />
+          <Collapse isOpen={this.state.isOpen} navbar>
+            <AuthUserContext.Consumer>
+              {authUser =>
+                authUser ? <NavigationAuth /> : <NavigationNonAuth />
+              }
+            </AuthUserContext.Consumer>
+          </Collapse>
+        </Navbar>
+      </div>
+    );
+  }
+}
+
+
+const Navigation1 = () => (
+  <Navbar color="light" light expand="md">
   <div className="container">
+  <NavbarBrand href={ROUTES.HOME}>Home</NavbarBrand>
+  <Collapse navbar>
+  <Nav className="ml-auto" navbar>
     <AuthUserContext.Consumer>
       {authUser =>
         authUser ? <NavigationAuth /> : <NavigationNonAuth />
       }
     </AuthUserContext.Consumer>
+    </Nav>
+    </Collapse>
   </div>
-  </nav>
+  </Navbar>
 );
 
 const NavigationAuth = () => (
-  <ul>
-    <li>
-      <NavLink to={ROUTES.HOME}>Home</NavLink>
-    </li>
-    <AuthUserContext.Consumer>{authUser => authUser.email === "admins@turf.com" ? <NavigationAdmin /> : null}</AuthUserContext.Consumer>
-    <li>
-    <SignOutButton />
-    </li>
-  </ul>
+  <Nav className="ml-auto" navbar>
+    <AuthUserContext.Consumer>{authUser => authUser.email === "admins@turf.com" ? <><NavigationAdminManagePosts /> <NavigationAdminManageUsers /></> : null}</AuthUserContext.Consumer>
+    <NavItem>
+      <SignOutButton />
+    </NavItem>
+  </Nav>
 );
 
 const NavigationNonAuth = () => (
-  <ul>
-    <li>
-      <NavLink to={ROUTES.LANDING}>Landing</NavLink>
-    </li>
-    <li>
-      <NavLink to={ROUTES.SIGN_IN}>Sign In</NavLink>
-    </li>
-    </ul>
+  <Nav className="ml-auto" navbar>
+    <NavigationLanding />
+    <NavigationSignIn />
+  </Nav>
 );
 
-const NavigationAdmin = () => (
-  <ul>
-    <li>
-      <NavLink to={ROUTES.MANAGE_POSTS}>Manage Posts</NavLink>
-    </li>
-    <li>
-      <NavLink to={ROUTES.MANAGE_USERS}>Manage Users</NavLink>
-    </li>
-  </ul>
+const NavigationAdminManagePosts = () => (
+  <NavItem>
+      <NavLink href={ROUTES.MANAGE_POSTS}>Manage Posts</NavLink>
+  </NavItem>
 );
 
-export default Navigation;
+const NavigationAdminManageUsers = () => (
+  <NavItem>
+      <NavLink href={ROUTES.MANAGE_USERS}>Manage Users</NavLink>
+  </NavItem>
+);
+
+const NavigationLanding = () => (
+  <NavItem>
+      <NavLink href={ROUTES.LANDING}>Landing</NavLink>
+    </NavItem>
+);
+
+const NavigationSignIn = () => (
+  <NavItem>
+    <NavLink href={ROUTES.SIGN_IN}>Sign In</NavLink>
+    </NavItem>
+);

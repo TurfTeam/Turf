@@ -52,24 +52,6 @@ export default class Navigation extends React.Component {
   }
 }
 
-
-const Navigation1 = () => (
-  <Navbar color="light" light expand="md">
-  <div className="container">
-  <NavbarBrand href={ROUTES.HOME}>Home</NavbarBrand>
-  <Collapse navbar>
-  <Nav className="ml-auto" navbar>
-    <AuthUserContext.Consumer>
-      {authUser =>
-        authUser ? <NavigationAuth /> : <NavigationNonAuth />
-      }
-    </AuthUserContext.Consumer>
-    </Nav>
-    </Collapse>
-  </div>
-  </Navbar>
-);
-
 const NavigationAuth = () => (
   <Nav className="ml-auto" navbar>
     <AuthUserContext.Consumer>{authUser => authUser.email === "admins@turf.com" ? <><NavigationAdminManagePosts /> <NavigationAdminManageUsers /></> : null}</AuthUserContext.Consumer>

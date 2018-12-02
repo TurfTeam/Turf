@@ -78,16 +78,17 @@ class Navigation extends Component {
     console.log("NOTIFICATIONS: ",uid);
     this.props.firebase.db.collection("users").doc(uid)
     .get()
-    .then(querySnapshot => {
-      console.log("querySnapshot: ",querySnapshot);
+    .then(user => {
+      console.log("querySnapshot: ",user.data());
+
+      return (
+        <div>
+              <Button color="primary" outline>
+                Notifications <Badge color="secondary">{user.data().notifications.length}</Badge>
+              </Button>
+            </div>
+      );
     });
-    return (
-      <div>
-            <Button color="primary" outline>
-              Notifications <Badge color="secondary">4</Badge>
-            </Button>
-          </div>
-    );
   }
 
   NavigationAdminManagePosts = () => {

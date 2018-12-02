@@ -1,0 +1,20 @@
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{userId} {
+      allow read, update, delete: if request.auth.uid != null;
+      allow create: if request.auth.uid != null;
+    }
+    
+    match /posts/{postId} {
+    	allow read, create, update, delete: if request.auth.uid != null;
+    }
+    
+    match /blacklist/{userId} {
+    	allow read, create, update, delete: if request.auth.uid != null;
+    }
+    
+    match /comments/{commentId} {
+    	allow read, create, update, delete: if request.auth.uid != null;
+    }
+  }
+}

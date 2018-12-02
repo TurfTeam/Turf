@@ -3,6 +3,7 @@ import { compose } from 'recompose';
 
 import { withAuthorization } from '../Session';
 import { withFirebase } from '../Firebase';
+import { Card, Button, CardTitle, CardText, Row, Col } from 'reactstrap';
 
 class ManagePostsPage extends Component {
     constructor(props) {
@@ -43,20 +44,20 @@ class ManagePostsPage extends Component {
         return (
             <div>
             <ul>
+            <Row>
+            <Col sm="6">
+            <Card body>
                 {posts.map(post => (
-                    <li key={post.id}>
-                        <span>
+                    <ul key={post.id}>
+                        <CardText>
                             Content: {post.data().content}
-                        </span>
-                        <span>
-                            Upvotes: {!!post.data().upvotes ? post.data().upvotes.length : 0}
-                        </span>
-                        <span>
-                            Downvotes: {!!post.data().downvotes ? post.data().downvotes.length : 0}
-                        </span>
-                        <button onClick={() => {this.onDelete(post)}}>Remove</button>
-                    </li>
-                ))}
+                        </CardText>
+                        <Button onClick={() => {this.onDelete(post)}}>Remove</Button>
+                    </ul>
+                    ))}
+                    </Card>
+                    </Col>
+                    </Row>
             </ul>
             </div>
         )

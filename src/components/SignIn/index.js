@@ -8,7 +8,9 @@ import * as ROUTES from '../../constants/routes';
 
 const SignInPage = () => (
   <div>
-    <h1>SignIn</h1>
+    <center>
+    <h1>Sign in</h1>
+    </center>
     <SignInForm />
     <SignUpLink />
   </div>
@@ -55,13 +57,17 @@ class SignInFormBase extends Component {
 
     return (
       <form onSubmit={this.onSubmit}>
+        <center>
+        <div className="form-group">
         <input
           name="email"
           value={email}
           onChange={this.onChange}
-          type="text"
+          type="email"
           placeholder="Email Address"
         />
+        </div>
+        <div className="form-group">
         <input
           name="password"
           value={password}
@@ -69,9 +75,14 @@ class SignInFormBase extends Component {
           type="password"
           placeholder="Password"
         />
+        </div>
+        </center>
+        <center>
         <Button disabled={isInvalid} type="submit">
           Sign In
         </Button>
+        </center>
+        <br></br>
 
         {error && <p>{error.message}</p>}
       </form>

@@ -31,6 +31,7 @@ class CreatePostBase extends Component {
         content,
         reported: false,
         creator: authUser.uid,
+        comments: [],
     }).then((post) => {
         console.log(this.props.firebase.db.FieldValue);
         console.log(post);

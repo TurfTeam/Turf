@@ -14,7 +14,10 @@ import {
   DropdownMenu,
   DropdownItem,
   Badge,
-  Button } from 'reactstrap';
+  Button,
+  Popover,
+  PopoverHeader,
+  PopoverBody } from 'reactstrap';
 import { withFirebase } from '../Firebase';
 
 import * as ROUTES from '../../constants/routes';
@@ -27,14 +30,48 @@ class Navigation extends Component {
     super(props);
 
     this.toggle = this.toggle.bind(this);
+    this.togglePopover = this.togglePopover.bind(this);
+
     this.state = {
-      isOpen: false
+      isOpen: false,
+      notifications: [],
+      popoverOpen: false,
+      u: ""
     };
   }
   toggle() {
-    this.setState({
-      isOpen: !this.state.isOpen
-    });
+    this.state.isOpen = !this.state.isOpen;
+    this.setState(this.state);
+  }
+
+  togglePopover() {
+    if(this.state.popoverOpen === true && this.state.notifications.length !== 0){
+      this.state.notifications = [];
+      this.state.popoverOpen = !this.state.popoverOpen;
+      this.setState(this.state);
+      
+      this.props.firebase.db.collection("users").doc(this.state.u)
+      .get()
+      .then(q => {
+        this.props.firebase.db.collection("users").doc(this.state.u)
+        .set({
+          blacklisted: q.data().blacklisted,
+          email: q.data().email,
+          notifications: [],
+          posts: q.data().posts,
+          role: q.data().role
+        }).then(() => {
+          console.log("Notifications updated");
+        })
+        .catch(error => {
+          console.error("Error clearing notifications: ",error);
+        });
+      })
+    }
+    if(this.state.notifications.length !== 0){
+      this.state.popoverOpen = !this.state.popoverOpen;
+      this.setState(this.state);
+    }
   }
   render() {
     return (
@@ -75,21 +112,33 @@ class Navigation extends Component {
   }
 
   NavigationNotifications = (uid) => {
-    console.log("NOTIFICATIONS: ",uid);
     this.props.firebase.db.collection("users").doc(uid)
     .get()
-    .then(user => {
-      console.log("querySnapshot: ",user.data());
-
+    .then(querySnapshot => {
+      this.state.u = uid;
+      this.state.notifications = querySnapshot.data().notifications;
+      this.setState(this.state);
+    });
       return (
         <div>
-              <Button color="primary" outline>
-                Notifications <Badge color="secondary">{user.data().notifications.length}</Badge>
+              <Button color="primary" outline id="Popover1" onClick={this.togglePopover}>
+                Notifications <Badge color="secondary">{this.state.notifications.length}</Badge>
               </Button>
+              <Popover placement="bottom" isOpen={this.state.popoverOpen} target="Popover1" toggle={this.togglePopover}>
+                {this.state.notifications.length > 0 ? this.state.notifications.map(this.createNotificationsRender, this) : null}
+                </Popover>
             </div>
       );
-    });
   }
+
+  createNotificationsRender(notification, index){
+    return (
+      <PopoverHeader>
+      {notification}
+      </PopoverHeader>
+  );
+  }
+
 
   NavigationAdminManagePosts = () => {
     return (

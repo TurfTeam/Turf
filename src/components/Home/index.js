@@ -52,7 +52,7 @@ class HomePage extends Component {
         .get()
         .then((querySnapshot) => {
           querySnapshot.docs.forEach(doc => {
-            this.state.comments[doc.id] = doc.data().content;
+            this.state.comments[doc.id] = doc.data();
           });
         });
 
@@ -82,13 +82,17 @@ class HomePage extends Component {
     }
 
     onSubmitComment = (post) => {
-      post.data().comments[post.id] = this.state.newComments[post.id];
+      var newComment = {
+        comment: this.state.newComments[post.id],
+        timeStamp: "just now"
+      }
+      post.data().comments[post.id] = newComment;
       this.props.firebase.doPostComment(post, this.state.newComments[post.id], JSON.parse(localStorage.getItem("authUser")).uid);
       this.props.firebase.db.collection("comments")
       .get()
       .then((querySnapshot) => {
         querySnapshot.docs.forEach(doc => {
-          this.state.comments[doc.id] = doc.data().content;
+          this.state.comments[doc.id] = doc.data();
         });
       });
 
@@ -171,7 +175,7 @@ class HomePage extends Component {
                   <Col>
                     <Container fluid={true}>
                     <div>
-                    {post.data().comments.map(this.createCommentsRender, this)}
+                    {post.data().comments.length > 0 ? post.data().comments.map(this.createCommentsRender, this) : null}
                     </div>
                     <Card>
                     <CardBody>
@@ -197,11 +201,11 @@ class HomePage extends Component {
     }
 
     createCommentsRender(comment, index){
-      console.log("comment: ",comment);
       return (
       <Card key={comment}>
         <CardBody>
-        {this.state.comments[comment]}
+        {this.state.comments[comment].content}
+        <div className="text-right">{this.state.comments[comment].timestamp}</div>
         </CardBody>
       </Card>
     );

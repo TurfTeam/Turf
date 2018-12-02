@@ -184,7 +184,7 @@ class Firebase {
 
       doPostComment = (post, comment, uid) => {
         var m = new Date();
-        var dateString = m.getUTCFullYear() +"/"+ (m.getUTCMonth()+1) +"/"+ m.getUTCDate() + " " + m.getUTCHours() + ":" + m.getUTCMinutes() + ":" + m.getUTCSeconds();
+        var dateString = m.getUTCFullYear() +"/"+ (m.getUTCMonth()+1) +"/"+ m.getUTCDate() + " " + (m.getUTCHours()+19) + ":" + m.getUTCMinutes() + ":" + m.getUTCSeconds();
         console.log("datestamp: ",dateString);
 
 

@@ -241,24 +241,35 @@ class Firebase {
         });
 
         this.db.collection("posts").doc(post.id)
-        .set({
-          content: post.data().content,
-          created: post.data().created,
-          creator: post.data().creator,
+        .update({
           reported: post.data().reported,
           comments: p_comments
         });
       }
 
-      doUpvote = (postId, userId) => {
-        console.log(postId);
-        console.log(userId);
-      }
+    doUpvote = (postId, userId) => {
+      this.db.collection(`posts`).doc(postId).update({
+        upvotes: app.firestore.FieldValue.arrayUnion(userId),
+        downvotes: app.firestore.FieldValue.arrayRemove(userId),
+      }).then(() => {
+      }).catch((e) => {
+      });
+    }
+
+    doDownvote = (postId, userId) => {
+      this.db.collection(`posts`).doc(postId).update({
+        downvotes: app.firestore.FieldValue.arrayUnion(userId),
+        upvotes: app.firestore.FieldValue.arrayRemove(userId),
+      }).then(() => {
+      }).catch((e) => {
+      });
+    }
 
     user = uid => this.db.collection(`users`).doc(uid);
     users = () => this.db.collection(`users`);
 
     posts = () => this.db.collection(`posts`);
+    post = postId => this.db.collection(`posts`).doc(postId);
 }
 
 export default Firebase;

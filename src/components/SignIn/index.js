@@ -37,7 +37,7 @@ class SignInFormBase extends Component {
       .then(() => {
         this.props.firebase.doGetUserRole(email);
         this.setState({ ...INITIAL_STATE });
-        this.props.history.push(ROUTES.LANDING);
+        this.props.history.push(ROUTES.HOME);
       })
       .catch(error => {
         this.setState({ error });

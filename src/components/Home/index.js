@@ -182,10 +182,10 @@ class HomePage extends Component {
     createCommentsRender(comment, index){
       console.log("comment: ",comment);
       return (
-      <Card>
-      <CardBody>
-      {this.state.comments[comment]}
-      </CardBody>
+      <Card key={comment}>
+        <CardBody>
+          {this.state.comments[comment]}
+        </CardBody>
       </Card>
     );
     }

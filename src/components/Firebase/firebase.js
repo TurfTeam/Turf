@@ -120,7 +120,74 @@ class Firebase {
         });
       }
 
+      doTimeSinceCreation = (timeStamp) => {
+        var m = new Date();
+        var returnString = "";
+
+        var count = 0;
+        var temp = "";
+
+        var year = 0;
+        var month = 0;
+        var date = 0;
+
+        var hours = 0;
+        var minutes = 0;
+        var seconds = 0;
+
+        var dateString = m.getUTCFullYear() +"/"+ (m.getUTCMonth()+1) +"/"+ m.getUTCDate() + " " + m.getUTCHours() + ":" + m.getUTCMinutes() + ":" + m.getUTCSeconds();
+
+        for(var i = 0; i<timeStamp.length; i++){
+          if(i+1 === timeStamp.length){
+            seconds = temp;
+          }
+          else if(timeStamp[i] === "/"){
+            if(count === 0) year = temp;
+            else if(count === 1) month = temp;
+
+            temp = "";
+            count++;
+          }
+          else if(timeStamp[i] === " "){
+            date = temp;
+
+            temp = "";
+            count++;
+          }
+          else if(timeStamp[i] === ":"){
+            if(count === 3) hours = temp;
+            else if(count === 4) minutes = temp;
+
+            temp = "";
+            count++;
+          }
+          else{
+            temp += timeStamp[i];
+          }
+        }
+
+        if(m.getUTCFullYear() - year > 0){
+          if(m.getUTCMonth() - month < 0) returnString = ((-1*(m.getUTCMonth() - month)).toString()+" months ago");
+          else returnString =  (m.getUTCFullYear() - year).toString()+" years ago";
+        }
+        else if(m.getUTCMonth() - month > 0){
+          if(m.getUTCDate() - date < 0) returnString =  ((-1*(m.getUTCDate - date)).toString()+" days ago");
+          else returnString =  ((m.getUTCMonth() - month).toString()+" months ago");
+        }
+        else if(m.getUTCDate - date > 0){
+          if(m.getUTCHours() - hours < 0) returnString = ((m.getUTCHours()+24)-hours).toString+" hours ago";
+        }
+        else returnString = 0.5;
+
+        console.log("happened: ",returnString);
+      }
+
       doPostComment = (post, comment, uid) => {
+        var m = new Date();
+        var dateString = m.getUTCFullYear() +"/"+ (m.getUTCMonth()+1) +"/"+ m.getUTCDate() + " " + m.getUTCHours() + ":" + m.getUTCMinutes() + ":" + m.getUTCSeconds();
+        console.log("datestamp: ",dateString);
+
+
         var commentId = this.stringGen(21);
         var p_comments = post.data().comments;
         p_comments.push(commentId);
@@ -129,7 +196,8 @@ class Firebase {
         .set({
           content: comment,
           pid: post.id,
-          uid: uid
+          uid: uid,
+          timestamp: dateString
         })
         .then(function() {
           console.log("POSTED");

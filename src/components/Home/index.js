@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { compose } from 'recompose';
 import { Container, Row, Col, Collapse } from 'reactstrap';
 import { Card, Button, CardText, CardBody } from 'reactstrap';
-import {Form, FormGroup, Label, Input} from 'reactstrap';
+import {Form, FormGroup, Label, Input, Alert} from 'reactstrap';
 
 import { withAuthorization } from '../Session';
 import { withFirebase } from '../Firebase';
@@ -16,8 +16,11 @@ class HomePage extends Component {
           posts: [],
           collapse: [],
           comments: [],
-          newComments: []
+          newComments: [],
+          visible: false
       };
+
+      this.onReportDismiss = this.onReportDismiss.bind(this);
     }
 
     toggle(index) {
@@ -27,6 +30,16 @@ class HomePage extends Component {
       console.log(this.state.newComments[index]);
       this.state.collapse[index] = !this.state.collapse[index];
       console.log(this.state.collapse);
+      this.setState(this.state);
+    }
+
+    onReportClick(post) {
+      this.props.firebase.doReport(post);
+      this.state.visible = true;
+      this.setState(this.state);
+    }
+    onReportDismiss() {
+      this.state.visible = false;
       this.setState(this.state);
     }
 
@@ -112,6 +125,9 @@ class HomePage extends Component {
         return (
             <div className="container">
             <div>
+            <Alert color="danger" isOpen={this.state.visible} toggle={this.onDismiss}>
+              You have reported a post. The administrators will review the post.
+            </Alert>
                 {posts.map(this.createPostRender, this)}
             </div>
             </div>
@@ -133,7 +149,7 @@ class HomePage extends Component {
                     </span>
                   </Col>
                   <Col xs="1">
-                    <span onClick={() => {this.props.firebase.doReport(post)}}>
+                    <span onClick={() => {this.onReportClick(post)}}>
                         <i className="fas fa-exclamation-circle"></i>
                     </span>
                   </Col>
@@ -185,7 +201,7 @@ class HomePage extends Component {
       return (
       <Card key={comment}>
         <CardBody>
-          {this.state.comments[comment]}
+        {this.state.comments[comment]}
         </CardBody>
       </Card>
     );

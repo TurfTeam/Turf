@@ -123,12 +123,13 @@ class HomePage extends Component {
       <Card className="card mt-3" key={post.id} id={post.id}>
           <CardBody>
               <Row>
-                  <Col xs="8">
+                  <Col xs="7">
                     {post.data().content}
                   </Col>
-                  <Col xs="1">
+                  <Col xs="2">
                     <span onClick={index => this.toggle(post.id)}>
-                        <i className="fas fa-comment"></i>
+                      <span style={{ whiteSpace: 'nowrap', marginRight: '5px', }}>{post.data().comments.length}</span>
+                      <i className="fas fa-comment"></i>
                     </span>
                   </Col>
                   <Col xs="1">

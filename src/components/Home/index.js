@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { compose } from 'recompose';
 import { Container, Row, Col, Collapse } from 'reactstrap';
-import { Card, Button, CardText, CardBody, Glyphicon } from 'reactstrap';
+import { Card, Button, CardText, CardBody } from 'reactstrap';
 import {Form, FormGroup, Label, Input} from 'reactstrap';
 
 import { withAuthorization } from '../Session';
@@ -149,10 +149,10 @@ class HomePage extends Component {
                   </Col>
               </Row>
               <Row>
-                  <Collapse isOpen={this.state.collapse[post.id]}>
+                  <Collapse className="full-width" isOpen={this.state.collapse[post.id]}>
                   <hr />
                   <Col>
-                    <Container>
+                    <Container fluid={true}>
                     <div>
                     {post.data().comments.map(this.createCommentsRender, this)}
                     </div>

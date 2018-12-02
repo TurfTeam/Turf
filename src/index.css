@@ -34,3 +34,7 @@ input[type=name] {
 .score {
   margin: 0 6px;
 }
+
+.full-width {
+  width: 100%;
+}

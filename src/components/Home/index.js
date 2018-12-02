@@ -132,7 +132,7 @@ class HomePage extends Component {
                     </span>
                   </Col>
                   <Col xs="1">
-                    <span onClick={() => {this.props.firebase.doPostComment(post.id, "YES", JSON.parse(localStorage.getItem("authUser")).uid)}}>
+                    <span onClick={() => {this.props.firebase.doReport(post)}}>
                         <i className="fas fa-exclamation-circle"></i>
                     </span>
                   </Col>

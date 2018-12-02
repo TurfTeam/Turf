@@ -42,12 +42,16 @@ class Firebase {
     doCreateUserRole = (uid, email) => {
       this.user(uid).set({
         email: email,
-        role: ['user']
+        role: ['user'],
+        notifications: [],
+        posts: [],
+        blacklisted: false
       }).then(function(docRef) {
         localStorage.setItem('r', JSON.stringify(1));
         //console.log("Document written with ID: ", docRef.id);
       })
     }
+
     doGetUserRole = (email) => {
       this.db.collection("users").where("email", "==", email)
       .get()
@@ -77,6 +81,7 @@ class Firebase {
         })
         .then(function() {
           console.log("BLAAAAACKLIST");
+          this.doPostNotification(user.id, "You have been blacklisted due to inappropriate behavior. You will no longer be able to post.");
         })
         .catch(function(error){
           console.error("Error writing document: ",error);
@@ -87,6 +92,7 @@ class Firebase {
         this.db.collection("blacklist").doc(user.id).delete()
         .then(function() {
           console.log("NO BLAAAAAACKLIST");
+          this.doPostNotification(user.id, "You have been removed from the blacklist and your user privileges have been restored. You are now able to post.");
         })
         .catch(function(error){
           console.error("Error deleting document: ",error);
@@ -114,6 +120,8 @@ class Firebase {
         })
         .then(() => {
           console.log("REPORTED");
+
+          this.doPostNotification(post.data().creator, "One of your posts has been reported. We will review your content and remove whatever is deemed inappropriate. ");
         })
         .catch(error => {
           console.error("Error reporting post: ",error);
@@ -182,10 +190,36 @@ class Firebase {
         console.log("happened: ",returnString);
       }
 
+      doPostNotification = (uid, noticeText) => {
+        this.db.collection("users").doc(uid)
+        .get()
+        .then(user => {
+          var notifications = user.data().notifications;
+
+          notifications.push(noticeText);
+
+          this.db.collection("users").doc(uid).set({
+            email: user.data().email,
+            role: user.data().role,
+            blacklisted: user.data().blacklisted,
+            posts: user.data().posts,
+            notifications: notifications
+          })
+          .then(() => {
+            console.log("Notification posted");
+          })
+          .catch(error => {
+            console.error("Error pushing notification: ",error);
+          })
+        });
+      }
+
       doPostComment = (post, comment, uid) => {
         var m = new Date();
         var dateString = m.getUTCFullYear() +"/"+ (m.getUTCMonth()+1) +"/"+ m.getUTCDate() + " " + (m.getUTCHours()+19) + ":" + m.getUTCMinutes() + ":" + m.getUTCSeconds();
         console.log("datestamp: ",dateString);
+
+        this.doPostNotification(post.data().creator, "A comment has been posted on one of your posts.");
 
 
         var commentId = this.stringGen(21);

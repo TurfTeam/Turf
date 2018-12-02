@@ -132,6 +132,11 @@ class Firebase {
         });
       }
 
+      doUpvote = (postId, userId) => {
+        console.log(postId);
+        console.log(userId);
+      }
+
     user = uid => this.db.collection(`users`).doc(uid);
     users = () => this.db.collection(`users`);
 

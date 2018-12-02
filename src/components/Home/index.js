@@ -125,7 +125,7 @@ class HomePage extends Component {
         return (
             <div className="container">
             <div>
-            <Alert color="danger" isOpen={this.state.visible} toggle={this.onDismiss}>
+            <Alert color="danger" isOpen={this.state.visible} toggle={this.onReportDismiss}>
               You have reported a post. The administrators will review the post.
             </Alert>
                 {posts.map(this.createPostRender, this)}

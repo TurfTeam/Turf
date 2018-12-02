@@ -3,6 +3,7 @@ import { compose } from 'recompose';
 
 import { withAuthorization } from '../Session';
 import { withFirebase } from '../Firebase';
+import { Button } from "reactstrap";
 
 class ManageUsersPage extends Component {
     constructor(props) {
@@ -96,12 +97,16 @@ class ManageUsersPage extends Component {
           <strong>ID:</strong> {user.id}
         </span>
         <span>
+        &nbsp;
           <strong>E-Mail:</strong> {user.data().email}
         </span>
         <span>
+        &nbsp;
           <strong>Role:</strong> {user.data().role}
         </span>
-        <button onClick={() => {this.onBlacklist(user)}}>Blacklist</button>
+        &nbsp;
+        <br></br>
+        <Button size="sm" onClick={() => {this.onBlacklist(user)}}>Blacklist</Button>
       </li>
     ))}
   </ul>
@@ -111,14 +116,19 @@ class ManageUsersPage extends Component {
     <li key={user.id}>
       <span>
         <strong>ID:</strong> {user.id}
+        &nbsp;
       </span>
       <span>
         <strong>E-Mail:</strong> {user.data().email}
       </span>
       <span>
+      &nbsp;
         <strong>Role:</strong> {user.data().role}
+        &nbsp;
       </span>
-      <button onClick={() => {this.onRestorePrivileges(user)}}>Restore Privileges</button>
+      &nbsp;
+      <br></br>
+      <Button size="sm" onClick={() => {this.onRestorePrivileges(user)}}>Restore Privileges</Button>
     </li>
   ))}
   </ul>

@@ -52,12 +52,6 @@ class ManagePostsPage extends Component {
                         <CardText>
                             Content: {post.data().content}
                         </CardText>
-                        <span>
-                            Upvotes: {!!post.data().upvotes ? post.data().upvotes.length : 0}
-                        </span>
-                        <span>
-                            Downvotes: {!!post.data().downvotes ? post.data().downvotes.length : 0}
-                        </span>
                         <Button onClick={() => {this.onDelete(post)}}>Remove</Button>
                     </ul>
                     ))}

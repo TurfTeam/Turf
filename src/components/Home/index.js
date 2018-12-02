@@ -175,8 +175,9 @@ class HomePage extends Component {
                   <Col>
                     <Container fluid={true}>
                     <div>
-                    {post.data().comments.length > 0 ? post.data().comments.map(this.createCommentsRender, this) : null}
+                    {post.data().comments.length > 0 ? post.data().comments.map(this.createCommentsRender, this) : null} 
                     </div>
+                    <br></br>
                     <Card>
                     <CardBody>
                     <Form>

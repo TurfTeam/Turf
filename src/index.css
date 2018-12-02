@@ -38,3 +38,11 @@ input[type=name] {
 .full-width {
   width: 100%;
 }
+
+.active-vote {
+  color: orange;
+}
+
+.unactive-vote {
+  color: black;
+}

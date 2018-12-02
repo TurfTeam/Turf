@@ -33,6 +33,8 @@ class CreatePostBase extends Component {
         creator: authUser.uid,
         created: firebase.firestore.Timestamp.now(),
         comments: [],
+        upvotes: [],
+        downvotes: [],
     }).then((post) => {
         console.log(this.props.firebase.db.FieldValue);
         console.log(post);

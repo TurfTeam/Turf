@@ -58,13 +58,17 @@ class HomePage extends Component {
 
         this.props.firebase.posts().get().then((querySnapshot) => {
             var count = 0;
-            this.state.posts = querySnapshot.docs;
 
             querySnapshot.docs.forEach(doc => {
               count++;
 
               this.state.collapse[doc.id] = false;
 
+              if (doc.data().upvotes && doc.data().downvotes) {
+                doc.score = doc.data().upvotes.length - doc.data().downvotes.length;
+              }
+
+              this.state.posts.push(doc);
 
               if(count === querySnapshot.docs.length){
                 this.state.loading = false;
@@ -107,6 +111,68 @@ class HomePage extends Component {
 
     }
 
+    upvote = postId => {
+      const { posts } = this.state;
+      let postIndex = posts.findIndex(p => p.id === postId);
+      if (postIndex >= 0) {
+        let post = posts[postIndex];
+        let currentUser = JSON.parse(localStorage.getItem("authUser")).uid;
+
+        if (!!post.data().upvotes && post.data().upvotes.includes(currentUser)) {
+          return;
+        } else {
+          if (!!post.data().downvotes && post.data().downvotes.includes(currentUser)) {
+            post.data().downvotes = post.data().downvotes.filter(i => i !== currentUser);
+            post.score += 1;
+          }
+          this.props.firebase.doUpvote(postId, currentUser);
+          post.score += 1;
+          document.getElementById(postId + '-score').textContent = post.score;
+          document.getElementById(postId + '-up').className = 'active-vote';
+          document.getElementById(postId + '-down').className = 'unactive-vote';
+        }
+
+        this.props.firebase.post(postId).get().then((doc) => {
+          if (doc.data().upvotes && doc.data().downvotes) {
+            doc.score = doc.data().upvotes.length - doc.data().downvotes.length;
+          }
+          posts[postIndex] = doc;
+          this.setState(posts);
+        });
+      }
+    }
+
+    downvote = postId => {
+      const { posts } = this.state;
+      let postIndex = posts.findIndex(p => p.id === postId);
+      if (postIndex >= 0) {
+        let post = posts[postIndex];
+        let currentUser = JSON.parse(localStorage.getItem("authUser")).uid;
+
+        if (!!post.data().downvotes && post.data().downvotes.includes(currentUser)) {
+          return;
+        } else {
+          if (!!post.data().upvotes && post.data().upvotes.includes(currentUser)) {
+            post.data().upvotes = post.data().upvotes.filter(i => i !== currentUser);
+            post.score -= 1;
+          }
+          this.props.firebase.doDownvote(postId, currentUser);
+          post.score -= 1;
+          document.getElementById(postId + '-score').textContent = post.score;
+          document.getElementById(postId + '-down').className = 'active-vote';
+          document.getElementById(postId + '-up').className = 'unactive-vote';
+        }
+
+        this.props.firebase.post(postId).get().then((doc) => {
+          if (doc.data().upvotes && doc.data().downvotes) {
+            doc.score = doc.data().upvotes.length - doc.data().downvotes.length;
+          }
+          posts[postIndex] = doc;
+          this.setState(posts);
+        });
+      }
+    }
+
     onChange = event => {
       console.log(event);
       console.log(event.target.name);
@@ -139,6 +205,9 @@ class HomePage extends Component {
     }
 
     createPostRender(post, index){
+      let currentUser = JSON.parse(localStorage.getItem("authUser")).uid;
+      let isUp = post.data().upvotes.includes(currentUser);
+      let isDown = post.data().downvotes.includes(currentUser);
       return (
       <Card className="card mt-3" key={post.id} id={post.id}>
           <CardBody>
@@ -158,13 +227,14 @@ class HomePage extends Component {
                     </span>
                   </Col>
                   <Col xs="2">
-                    <span onClick={() => {this.props.firebase.doPostComment(post.id, "YES", JSON.parse(localStorage.getItem("authUser")).uid)}}>
+                    <span id={ post.id + '-up'} className={isUp ? 'active-vote' : 'unactive-vote'} onClick={() => { this.upvote(post.id) }}>
                         <i className="fas fa-chevron-up"></i>
                     </span>
-                    <span className="text-right score">
-                        {!!post.data().downvotes && !!post.data().upvotes ? post.data().downvotes.length - post.data().downvotes.length : 0}
+                    <span className="text-right score" id={ post.id + "-score" }>
+                        {/* {!!post.data().downvotes && !!post.data().upvotes ? post.data().downvotes.length - post.data().downvotes.length : 0} */}
+                        { post.score ? post.score : 0 }
                     </span>
-                    <span onClick={() => {this.props.firebase.doPostComment(post.id, "YES", JSON.parse(localStorage.getItem("authUser")).uid)}}>
+                    <span id={ post.id + '-down' } className={isDown ? 'active-vote' : 'unactive-vote'} onClick={() => { this.downvote(post.id) }}>
                         <i className="fas fa-chevron-down"></i>
                     </span>
                   </Col>

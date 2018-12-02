@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { Component } from 'react';
 //import { NavLink } from 'react-router-dom';
+import { compose } from 'recompose';
 import {
   Collapse,
   Navbar,
@@ -21,7 +22,7 @@ import { AuthUserContext } from '../Session';
 import SignOutButton from '../SignOut';
 
 
-export default class Navigation extends React.Component {
+class Navigation extends Component {
   constructor(props) {
     super(props);
 
@@ -56,7 +57,7 @@ export default class Navigation extends React.Component {
   NavigationAuth = () => {
     return (
       <Nav className="ml-auto" navbar>
-        <AuthUserContext.Consumer>{authUser => authUser.email === "admins@turf.com" ? <>this.NavigationAdminManageUsers() this.NavigationAdminManagePosts() </> : this.NavigationNotifications(authUser.uid)}</AuthUserContext.Consumer>
+        <AuthUserContext.Consumer>{authUser => authUser.email === "admins@turf.com" ? <> {this.NavigationAdminManageUsers()} {this.NavigationAdminManagePosts()} </> : this.NavigationNotifications(authUser.uid)}</AuthUserContext.Consumer>
         <NavItem>
           <SignOutButton />
         </NavItem>
@@ -75,10 +76,11 @@ export default class Navigation extends React.Component {
 
   NavigationNotifications = (uid) => {
     console.log("NOTIFICATIONS: ",uid);
-  /*  this.props.firebase.db.collection("users").get(uid)
+    this.props.firebase.db.collection("users").doc(uid)
+    .get()
     .then(querySnapshot => {
       console.log("querySnapshot: ",querySnapshot);
-    });*/
+    });
     return (
       <div>
             <Button color="primary" outline>
@@ -120,3 +122,7 @@ export default class Navigation extends React.Component {
     );
   }
 }
+
+export default compose(
+    withFirebase
+)(Navigation);

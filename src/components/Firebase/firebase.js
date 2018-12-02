@@ -104,6 +104,22 @@ class Firebase {
         return text;
       }
 
+      doReport = (post) => {
+        this.db.collection("posts").doc(post.id).set({
+          comments: post.data().comments,
+          content: post.data().content,
+          created: post.data().created,
+          creator: post.data().creator,
+          reported: true
+        })
+        .then(() => {
+          console.log("REPORTED");
+        })
+        .catch(error => {
+          console.error("Error reporting post: ",error);
+        });
+      }
+
       doPostComment = (post, comment, uid) => {
         var commentId = this.stringGen(21);
         var p_comments = post.data().comments;

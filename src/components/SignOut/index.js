@@ -1,10 +1,27 @@
 import React from 'react';
-import { NavLink } from 'reactstrap';
 
 import { withFirebase } from '../Firebase';
-
+import {
+  Collapse,
+  Navbar,
+  NavbarToggler,
+  NavbarBrand,
+  Nav,
+  NavItem,
+  NavLink,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+  Badge,
+  Button } from 'reactstrap';
+  
 const SignOutButton = ({ firebase }) => (
-  <NavLink onClick={firebase.doSignOut}>Sign Out</NavLink>
+  <NavItem>
+    <a href="#">
+  <NavLink onClick={firebase.doSignOut} >Sign Out</NavLink>
+  </a>
+  </NavItem>
 
 );
 

@@ -2,20 +2,10 @@ import React from 'react';
 
 import { withFirebase } from '../Firebase';
 import {
-  Collapse,
-  Navbar,
-  NavbarToggler,
-  NavbarBrand,
-  Nav,
   NavItem,
   NavLink,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  Badge,
-  Button } from 'reactstrap';
-  
+} from 'reactstrap';
+
 const SignOutButton = ({ firebase }) => (
   <NavItem>
     <a href="#">

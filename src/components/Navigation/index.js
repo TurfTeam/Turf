@@ -49,7 +49,7 @@ class Navigation extends Component {
       this.state.notifications = [];
       this.state.popoverOpen = !this.state.popoverOpen;
       this.setState(this.state);
-      
+
       this.props.firebase.db.collection("users").doc(this.state.u)
       .get()
       .then(q => {
@@ -76,8 +76,8 @@ class Navigation extends Component {
   render() {
     return (
       <div>
-        <Navbar color="light" light expand="md">
-          <NavbarBrand href={ROUTES.HOME}>Turf</NavbarBrand>
+        <Navbar style={{backgroundColor: '#00CFCF'}} light expand="md">
+          <NavbarBrand style={{color: 'white', fontWeight: 'bold'}} href={ROUTES.HOME}>Turf</NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
             <AuthUserContext.Consumer>
@@ -121,7 +121,7 @@ class Navigation extends Component {
     });
       return (
         <div>
-              <Button color="primary" outline id="Popover1" onClick={this.togglePopover}>
+              <Button  style={{backgroundColor: "#00CFCF", color: "white", fontWeight: "bold"}} outline id="Popover1" onClick={this.togglePopover}>
                 Notifications <Badge color="secondary">{this.state.notifications.length}</Badge>
               </Button>
               <Popover placement="bottom" isOpen={this.state.popoverOpen} target="Popover1" toggle={this.togglePopover}>
@@ -143,7 +143,7 @@ class Navigation extends Component {
   NavigationAdminManagePosts = () => {
     return (
       <NavItem>
-          <NavLink href={ROUTES.MANAGE_POSTS}>Manage Posts</NavLink>
+          <NavLink style={{color: 'white', fontWeight: 'bold'}} href={ROUTES.MANAGE_POSTS}>Manage Posts</NavLink>
       </NavItem>
     );
   }
@@ -151,7 +151,7 @@ class Navigation extends Component {
   NavigationAdminManageUsers = () => {
     return (
       <NavItem>
-          <NavLink href={ROUTES.MANAGE_USERS}>Manage Users</NavLink>
+          <NavLink style={{color: 'white', fontWeight: 'bold'}} href={ROUTES.MANAGE_USERS}>Manage Users</NavLink>
       </NavItem>
     );
   }
@@ -159,7 +159,7 @@ class Navigation extends Component {
   NavigationLanding = () => {
     return (
       <NavItem>
-          <NavLink href={ROUTES.LANDING}>Landing</NavLink>
+          <NavLink style={{color: 'white', fontWeight: 'bold'}} href={ROUTES.LANDING}>Landing</NavLink>
         </NavItem>
     );
   }
@@ -167,7 +167,7 @@ class Navigation extends Component {
   NavigationSignIn = () => {
     return (
       <NavItem>
-        <NavLink href={ROUTES.SIGN_IN}>Sign In</NavLink>
+        <NavLink style={{color: 'white', fontWeight: 'bold'}} href={ROUTES.SIGN_IN}>Sign In</NavLink>
         </NavItem>
     );
   }

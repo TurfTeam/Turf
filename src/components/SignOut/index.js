@@ -9,7 +9,7 @@ import {
 const SignOutButton = ({ firebase }) => (
   <NavItem>
     <a href="#">
-  <NavLink onClick={firebase.doSignOut} >Sign Out</NavLink>
+  <NavLink style={{color: 'white', fontWeight: 'bold'}} onClick={firebase.doSignOut} >Sign Out</NavLink>
   </a>
   </NavItem>
 

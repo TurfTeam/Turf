@@ -41,7 +41,7 @@ class SignUpFormBase extends Component {
         }).then(() => {
           this.props.firebase.doCreateUserRole(authUser.user.uid, email);
           this.setState({ ...INITIAL_STATE });
-          this.props.history.push(ROUTES.LANDING);
+          this.props.history.push(ROUTES.HOME);
         }).catch((error) => {
           this.setState({ error });
         });

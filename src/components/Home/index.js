@@ -206,8 +206,8 @@ class HomePage extends Component {
 
     createPostRender(post, index){
       let currentUser = JSON.parse(localStorage.getItem("authUser")).uid;
-      let isUp = post.data().upvotes.includes(currentUser);
-      let isDown = post.data().downvotes.includes(currentUser);
+      let isUp = !!post.data().upvotes && post.data().upvotes.includes(currentUser);
+      let isDown = !!post.data().downvotes && post.data().downvotes.includes(currentUser);
       return (
       <Card className="card mt-3" key={post.id} id={post.id}>
           <CardBody>

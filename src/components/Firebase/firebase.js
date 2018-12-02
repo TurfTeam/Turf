@@ -93,11 +93,26 @@ class Firebase {
         });
       }
 
-      doPostComment = (pid, comment, uid) => {
-        this.db.collection("comments").doc()
+      stringGen = (len) => {
+        var text = "";
+
+        var charset = "abcdefghijklmnopqrstuvwxyz0123456789";
+
+        for (var i = 0; i < len; i++)
+        text += charset.charAt(Math.floor(Math.random() * charset.length));
+
+        return text;
+      }
+
+      doPostComment = (post, comment, uid) => {
+        var commentId = this.stringGen(21);
+        var p_comments = post.data().comments;
+        p_comments.push(commentId);
+
+        this.db.collection("comments").doc(commentId)
         .set({
           content: comment,
-          pid: pid,
+          pid: post.id,
           uid: uid
         })
         .then(function() {
@@ -105,6 +120,15 @@ class Firebase {
         })
         .catch(function(error) {
           console.error("Error adding comment: ",error);
+        });
+
+        this.db.collection("posts").doc(post.id)
+        .set({
+          content: post.data().content,
+          created: post.data().created,
+          creator: post.data().creator,
+          reported: post.data().reported,
+          comments: p_comments
         });
       }
 

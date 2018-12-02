@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { compose } from 'recompose';
 import { Container, Row, Col, Collapse } from 'reactstrap';
 import { Card, Button, CardText, CardBody, Glyphicon } from 'reactstrap';
+import {Form, FormGroup, Label, Input} from 'reactstrap';
 
 import { withAuthorization } from '../Session';
 import { withFirebase } from '../Firebase';
@@ -34,6 +35,14 @@ class HomePage extends Component {
         console.log("state: ", this.state);
         var comments = [];
 
+        this.props.firebase.db.collection("comments")
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.docs.forEach(doc => {
+            this.state.comments[doc.id] = doc.data().content;
+          });
+        });
+
         this.props.firebase.posts().get().then((querySnapshot) => {
             var count = 0;
             this.state.posts = querySnapshot.docs;
@@ -43,14 +52,8 @@ class HomePage extends Component {
 
               this.state.collapse[doc.id] = false;
 
-              this.props.firebase.db.collection("comments").where("pid", "==", doc.id)
-              .get()
-              .then(function(commentsList){
-                comments[doc.id] = commentsList.docs;
-              });
 
               if(count === querySnapshot.docs.length){
-                this.state.comments = comments;
                 this.state.loading = false;
                 this.setState(this.state);
 
@@ -65,7 +68,25 @@ class HomePage extends Component {
         // this.props.firebase.posts().off();
     }
 
-    onSubmit = event => {
+    onSubmitComment = (post) => {
+      post.data().comments[post.id] = this.state.newComments[post.id];
+      this.props.firebase.doPostComment(post, this.state.newComments[post.id], JSON.parse(localStorage.getItem("authUser")).uid);
+      this.props.firebase.db.collection("comments")
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.docs.forEach(doc => {
+          this.state.comments[doc.id] = doc.data().content;
+        });
+      });
+
+      this.props.firebase.db.collection("posts")
+      .get()
+      .then((querySnapshot) => {
+        this.state.newComments[post.id] = '';
+        this.state.posts = querySnapshot.docs;
+
+        this.setState(this.state);
+      });
 
     }
 
@@ -98,12 +119,11 @@ class HomePage extends Component {
     }
 
     createPostRender(post, index){
-      const comment = this.state.newComments[post.id];
       return (
       <Card className="card mt-3" key={post.id} id={post.id}>
           <CardBody>
               <Row>
-                  <Col xs="7">
+                  <Col xs="8">
                     {post.data().content}
                   </Col>
                   <Col xs="1">
@@ -127,11 +147,15 @@ class HomePage extends Component {
                         <i className="fas fa-chevron-down"></i>
                     </span>
                   </Col>
+              </Row>
+              <Row>
                   <Collapse isOpen={this.state.collapse[post.id]}>
                   <hr />
-                  <Row>
-                  <Col xs="12">
+                  <Col>
                     <Container>
+                    <div>
+                    {post.data().comments.map(this.createCommentsRender, this)}
+                    </div>
                     <Card>
                     <CardBody>
                     <Form>
@@ -140,17 +164,28 @@ class HomePage extends Component {
                         <Input type="textarea" name="comment" value={this.state.newComments[post.id]} onChange={this.onChangeComment.bind(this, post.id)} placeholder="Comment" />
                       </FormGroup>
 
-                      <Button onClick={() => this.props.firebase.doPostComment(post.id, this.state.newComments[post.id], JSON.parse(localStorage.getItem("authUser")).uid)}>Submit</Button>
+                      <Button onClick={() => this.onSubmitComment(post)}>Submit</Button>
                     </Form>
                     </CardBody>
                     </Card>
                     </Container>
 
                     </Col>
-                    </Row>
                   </Collapse>
               </Row>
+
           </CardBody>
+      </Card>
+    );
+    }
+
+    createCommentsRender(comment, index){
+      console.log("comment: ",comment);
+      return (
+      <Card>
+      <CardBody>
+      {this.state.comments[comment]}
+      </CardBody>
       </Card>
     );
     }

@@ -44,7 +44,7 @@ export default class Navigation extends React.Component {
           <Collapse isOpen={this.state.isOpen} navbar>
             <AuthUserContext.Consumer>
               {authUser =>
-                authUser ? <NavigationAuth /> : <NavigationNonAuth />
+                authUser ? this.NavigationAuth() : this.NavigationNonAuth()
               }
             </AuthUserContext.Consumer>
           </Collapse>
@@ -52,52 +52,71 @@ export default class Navigation extends React.Component {
       </div>
     );
   }
+
+  NavigationAuth = () => {
+    return (
+      <Nav className="ml-auto" navbar>
+        <AuthUserContext.Consumer>{authUser => authUser.email === "admins@turf.com" ? <>this.NavigationAdminManageUsers() this.NavigationAdminManagePosts() </> : this.NavigationNotifications(authUser.uid)}</AuthUserContext.Consumer>
+        <NavItem>
+          <SignOutButton />
+        </NavItem>
+      </Nav>
+    );
+  }
+
+  NavigationNonAuth = () => {
+    return (
+      <Nav className="ml-auto" navbar>
+        {this.NavigationLanding()}
+        {this.NavigationSignIn()}
+      </Nav>
+    );
+  }
+
+  NavigationNotifications = (uid) => {
+    console.log("NOTIFICATIONS: ",uid);
+  /*  this.props.firebase.db.collection("users").get(uid)
+    .then(querySnapshot => {
+      console.log("querySnapshot: ",querySnapshot);
+    });*/
+    return (
+      <div>
+            <Button color="primary" outline>
+              Notifications <Badge color="secondary">4</Badge>
+            </Button>
+          </div>
+    );
+  }
+
+  NavigationAdminManagePosts = () => {
+    return (
+      <NavItem>
+          <NavLink href={ROUTES.MANAGE_POSTS}>Manage Posts</NavLink>
+      </NavItem>
+    );
+  }
+
+  NavigationAdminManageUsers = () => {
+    return (
+      <NavItem>
+          <NavLink href={ROUTES.MANAGE_USERS}>Manage Users</NavLink>
+      </NavItem>
+    );
+  }
+
+  NavigationLanding = () => {
+    return (
+      <NavItem>
+          <NavLink href={ROUTES.LANDING}>Landing</NavLink>
+        </NavItem>
+    );
+  }
+
+  NavigationSignIn = () => {
+    return (
+      <NavItem>
+        <NavLink href={ROUTES.SIGN_IN}>Sign In</NavLink>
+        </NavItem>
+    );
+  }
 }
-
-const NavigationAuth = () => (
-  <Nav className="ml-auto" navbar>
-    <AuthUserContext.Consumer>{authUser => authUser.email === "admins@turf.com" ? <><NavigationAdminManagePosts /> <NavigationAdminManageUsers /></> : <NavigationNotifications />}</AuthUserContext.Consumer>
-    <NavItem>
-      <SignOutButton />
-    </NavItem>
-  </Nav>
-);
-
-const NavigationNotifications = () => (
-  <div>
-        <Button color="primary" outline>
-          Notifications <Badge color="secondary">4</Badge>
-        </Button>
-      </div>
-);
-
-const NavigationNonAuth = () => (
-  <Nav className="ml-auto" navbar>
-    <NavigationLanding />
-    <NavigationSignIn />
-  </Nav>
-);
-
-const NavigationAdminManagePosts = () => (
-  <NavItem>
-      <NavLink href={ROUTES.MANAGE_POSTS}>Manage Posts</NavLink>
-  </NavItem>
-);
-
-const NavigationAdminManageUsers = () => (
-  <NavItem>
-      <NavLink href={ROUTES.MANAGE_USERS}>Manage Users</NavLink>
-  </NavItem>
-);
-
-const NavigationLanding = () => (
-  <NavItem>
-      <NavLink href={ROUTES.LANDING}>Landing</NavLink>
-    </NavItem>
-);
-
-const NavigationSignIn = () => (
-  <NavItem>
-    <NavLink href={ROUTES.SIGN_IN}>Sign In</NavLink>
-    </NavItem>
-);

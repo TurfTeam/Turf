@@ -22,13 +22,13 @@ body {
 
 .splashbuttons {
   text-decoration: none;
-  margin-top:50px;
-  margin-right:50px;
+  margin-top:30px;
+  margin-right:15px;
   padding-top: 5px;
   padding-bottom: 5px;
   padding-left: 40px;
   padding-right: 40px;
-  margin-bottom: 50px;
+  margin-bottom: 30px;
   border: #ffffff 2px solid;
   border-radius: 10px;
   color: #ffffff;
@@ -36,27 +36,22 @@ body {
 }
 
 #signbox {
-  padding-top: 50px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 50px;
+  margin-top: -20px;
   background-color: white;
   align-items:center;
   background-position: center;
-  border-radius: 10px;
-  height:500px;
-  width: 500px;
+  border-radius: 0px;
+  height: 500px;
 }
 
 #signheader {
-  font-family: "Segoe UI";
   font-size: 40px;
   color: #707070;
   padding-bottom: 20px;
 }
 
 #signinsubmit {
-  margin-top: 118px;
+  margin-top: 70px;
   border-color: #00cfcf;
   background-color: #00cfcf;
 }
@@ -132,13 +127,13 @@ body {
 
 .splashbuttons:hover {
   text-decoration: none;
-  margin-top:50px;
-  margin-right:50px;
+  margin-top:30px;
+  margin-right:15px;
   padding-top: 5px;
   padding-bottom: 5px;
   padding-left: 40px;
   padding-right: 40px;
-  margin-bottom: 50px;
+  margin-bottom: 30px;
   border: #ffffff 2px solid;
   border-radius: 10px;
   background: #ffffff;

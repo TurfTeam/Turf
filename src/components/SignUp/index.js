@@ -8,6 +8,7 @@ import { Button } from 'reactstrap';
 const SignUpPage = () => (
   <center>
   <div id="signbox">
+  <br></br>
     <h1 id="signheader">Sign-Up</h1>
     <SignUpForm />
   </div>

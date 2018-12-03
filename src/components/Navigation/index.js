@@ -159,7 +159,6 @@ class Navigation extends Component {
   NavigationLanding = () => {
     return (
       <NavItem>
-          <NavLink style={{color: 'white', fontWeight: 'bold'}} href={ROUTES.LANDING}>Landing</NavLink>
         </NavItem>
     );
   }

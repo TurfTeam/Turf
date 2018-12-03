@@ -48,16 +48,17 @@ class ManagePostsPage extends Component {
     render() {
         const { posts } = this.state;
         return (
+            <div id="homebackground">
           <Container>
           <Row>
             <Col>
-              <center><h2>Manage Posts</h2></center>
+              <center><h2 id="signheader" style={{paddingTop: "20px"}}>Manage Posts</h2></center>
             </Col>
           </Row>
           <hr />
           <Row>
             <Col>
-              <Button onClick={this.toggle}>Toggle {this.state.toggleView ? "List View" : "Tile View"}</Button>
+              <Button id="orangebtn" onClick={this.toggle}>Toggle {this.state.toggleView ? "List View" : "Tile View"}</Button>
             </Col>
           </Row>
           <hr />
@@ -65,6 +66,7 @@ class ManagePostsPage extends Component {
             this.state.toggleView ? this.renderTileView() : this.renderListView()
           }
             </Container>
+            </div>
         )
     }
 
@@ -79,7 +81,7 @@ class ManagePostsPage extends Component {
                       <CardText>
                           Content: {post.data().content}
                       </CardText>
-                      <Button onClick={() => {this.onDelete(post)}}>Remove</Button>
+                      <Button id="orangebtn" onClick={() => {this.onDelete(post)}}>Remove</Button>
                       </CardBody>
                 </Card>
                 <br />
@@ -100,7 +102,7 @@ class ManagePostsPage extends Component {
                       <CardText>
                           Content: {post.data().content}
                       </CardText>
-                      <Button onClick={() => {this.onDelete(post)}}>Remove</Button>
+                      <Button id="orangebtn" onClick={() => {this.onDelete(post)}}>Remove</Button>
                       </CardBody>
                 </Card>
                 <br />

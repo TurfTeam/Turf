@@ -112,10 +112,12 @@ class ManageUsersPage extends Component {
     const { users, blacklisted } = this.state;
 
     return (
+        <div id="homebackground" style={{paddingTop: "20px"}}>
       <Container>
       <Row>
         <Col>
-        <center><h2>Manage Users</h2></center>
+        <center><h2 id="signheader">Manage Users</h2></center>
+
         </Col>
       </Row>
       <Nav tabs>
@@ -136,7 +138,7 @@ class ManageUsersPage extends Component {
           <hr />
           <Row>
             <Col>
-              <Button onClick={this.toggleActiveView}>Toggle {this.state.toggleActiveView ? "List View" : "Tile View"}</Button>
+              <Button id="orangebtn" onClick={this.toggleActiveView}>Toggle {this.state.toggleActiveView ? "List View" : "Tile View"}</Button>
             </Col>
           </Row>
           <hr />
@@ -148,7 +150,7 @@ class ManageUsersPage extends Component {
         <hr />
         <Row>
           <Col>
-            <Button onClick={this.toggleBlacklistView}>Toggle {this.state.toggleBlacklistView ? "List View" : "Tile View"}</Button>
+            <Button id="orangebtn" onClick={this.toggleBlacklistView}>Toggle {this.state.toggleBlacklistView ? "List View" : "Tile View"}</Button>
           </Col>
         </Row>
         <hr />
@@ -157,6 +159,7 @@ class ManageUsersPage extends Component {
         </TabPane>
       </TabContent>
       </Container>
+        </div>
     );
   }
 
@@ -175,7 +178,7 @@ class ManageUsersPage extends Component {
                         <br />
                         Posts: {user.data().posts.length}
                     </CardText>
-                    <Button onClick={() => {this.onBlacklist(user)}}>Blacklist</Button>
+                    <Button  id="orangebtn" onClick={() => {this.onBlacklist(user)}}>Blacklist</Button>
                     </CardBody>
               </Card>
               <br />
@@ -200,7 +203,7 @@ class ManageUsersPage extends Component {
                     <br />
                     Posts: {user.data().posts.length}
                     </CardText>
-                    <Button onClick={() => {this.onBlacklist(user)}}>Blacklist</Button>
+                    <Button  id="orangebtn" onClick={() => {this.onBlacklist(user)}}>Blacklist</Button>
                     </CardBody>
               </Card>
               <br />
@@ -225,7 +228,7 @@ class ManageUsersPage extends Component {
                     <br />
                     Posts: {user.data().posts.length}
                     </CardText>
-                    <Button onClick={() => {this.onRestorePrivileges(user)}}>Restore Privileges</Button>
+                    <Button  id="orangebtn" onClick={() => {this.onRestorePrivileges(user)}}>Restore Privileges</Button>
                     </CardBody>
               </Card>
               <br />
@@ -250,7 +253,7 @@ class ManageUsersPage extends Component {
                     <br />
                     Posts: {user.data().posts.length}
                     </CardText>
-                    <Button onClick={() => {this.onRestorePrivileges(user)}}>Restore Privileges</Button>
+                    <Button  id="orangebtn" onClick={() => {this.onRestorePrivileges(user)}}>Restore Privileges</Button>
                     </CardBody>
               </Card>
               <br />

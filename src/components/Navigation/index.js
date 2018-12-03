@@ -78,8 +78,8 @@ class Navigation extends Component {
       <div>
         <Navbar style={{backgroundColor: '#00CFCF'}} light expand="md">
           <NavbarBrand style={{color: 'white', fontWeight: 'bold'}} href={ROUTES.HOME}>Turf</NavbarBrand>
-          <NavbarToggler onClick={this.toggle} />
-          <Collapse isOpen={this.state.isOpen} navbar>
+          <NavbarToggler style={{color: 'white'}} onClick={this.toggle} />
+          <Collapse style={{color: 'white'}} isOpen={this.state.isOpen} navbar>
             <AuthUserContext.Consumer>
               {authUser =>
                 authUser ? this.NavigationAuth() : this.NavigationNonAuth()

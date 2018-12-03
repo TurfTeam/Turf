@@ -107,7 +107,7 @@ class CreatePostBase extends Component {
               <hr />
               <center>
               <Row>
-              <Button className="text-center" disabled={isInvalid} onClick={this.onSubmit}>
+              <Button className="text-center" id="orangebtn" disabled={isInvalid} onClick={this.onSubmit}>
                   Create Post
               </Button>
               </Row>

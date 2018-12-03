@@ -63,6 +63,31 @@ body {
   margin-bottom: 5px;
 }
 
+#image{
+  background-image: url('../src/img/turf_logo.png');
+  background-repeat: no-repeat;
+  height:10vh;
+  width: 200px;
+  background-size: 500px;
+  background-position: center;
+  border: 0;
+  align-items:center;
+  margin-bottom: 0;
+}
+
+#orangebtn {
+  background-color: #FC9700;
+  border-color: #FC9700;
+}
+
+#navitem {
+  border-color: #00cfcf;
+}
+
+#homebackground {
+  background-color: #F5F5F5;
+}
+
 #signlogo {
   background-image: url('../src/img/turf_logo.png');
   background-repeat: no-repeat;
@@ -147,4 +172,8 @@ input[type=name] {
 
 .unactive-vote {
   color: black;
+}
+
+.navbar {
+  margin-bottom: 0px;
 }

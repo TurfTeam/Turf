@@ -76,8 +76,8 @@ class Navigation extends Component {
   render() {
     return (
       <div>
-        <Navbar style={{backgroundColor: '#00CFCF'}} light expand="md">
-          <NavbarBrand style={{color: 'white', fontWeight: 'bold'}} href={ROUTES.HOME}>Turf</NavbarBrand>
+        <Navbar style={{backgroundColor: '#00CFCF', marginBottom: "0px", paddingBottom: "0px"}} light expand="md">
+            <NavbarBrand style={{color: 'white', fontWeight: 'bold', border: "0"}} href={ROUTES.HOME}><img id="image"></img></NavbarBrand>
           <NavbarToggler style={{color: 'white'}} onClick={this.toggle} />
           <Collapse style={{color: 'white'}} isOpen={this.state.isOpen} navbar>
             <AuthUserContext.Consumer>
@@ -93,7 +93,7 @@ class Navigation extends Component {
 
   NavigationAuth = () => {
     return (
-      <Nav className="ml-auto" navbar>
+      <Nav className="ml-auto" navbar style={{marginBottom: "0px", paddingBottom: "0px"}}>
         <AuthUserContext.Consumer>{authUser => authUser.email === "admins@turf.com" ? <> {this.NavigationNotifications(authUser.uid)} {this.NavigationAdminManageUsers()} {this.NavigationAdminManagePosts()} </> : this.NavigationNotifications(authUser.uid)}</AuthUserContext.Consumer>
         <NavItem>
           <SignOutButton />
@@ -104,7 +104,7 @@ class Navigation extends Component {
 
   NavigationNonAuth = () => {
     return (
-      <Nav className="ml-auto" navbar>
+      <Nav className="ml-auto" navbar style={{marginBottom: "0px", paddingBottom: "0px"}}>
         {this.NavigationLanding()}
         {this.NavigationSignIn()}
       </Nav>
@@ -123,7 +123,7 @@ class Navigation extends Component {
     });
       return (
         <div>
-              <Button  style={{backgroundColor: "#00CFCF", color: "white", fontWeight: "bold"}} outline id="Popover1" onClick={this.togglePopover}>
+              <Button  style={{backgroundColor: "#00CFCF", color: "white", fontWeight: "bold", borderColor: "#00cfcf" }} outline id="Popover1" onClick={this.togglePopover}>
                 Notifications <Badge color="secondary">{this.state.notifications.length}</Badge>
               </Button>
               <Popover placement="bottom" isOpen={this.state.popoverOpen} target="Popover1" toggle={this.togglePopover}>

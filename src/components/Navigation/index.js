@@ -115,9 +115,11 @@ class Navigation extends Component {
     this.props.firebase.db.collection("users").doc(uid)
     .get()
     .then(querySnapshot => {
-      this.state.u = uid;
-      this.state.notifications = querySnapshot.data().notifications;
-      this.setState(this.state);
+      if(querySnapshot.data() !== undefined){
+        this.state.u = uid;
+        if(querySnapshot.data().notifications !== undefined || querySnapshot.data().notifications !== null) this.state.notifications = querySnapshot.data().notifications;
+        this.setState(this.state);
+      }
     });
       return (
         <div>

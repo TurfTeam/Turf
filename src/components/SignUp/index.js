@@ -10,7 +10,10 @@ const SignUpPage = () => (
   <div id="signbox">
     <h1 id="signheader">Sign-Up</h1>
     <SignUpForm />
+      <div id="signlogo">
+      </div>
   </div>
+
   </center>
 );
 
@@ -75,7 +78,7 @@ class SignUpFormBase extends Component {
     return (
       <form onSubmit={this.onSubmit}>
             <center>
-        <div class="form-group">
+        <div class="form-group" id="signform">
          <input
           name="name"
           value={name}
@@ -84,7 +87,7 @@ class SignUpFormBase extends Component {
           placeholder="Full Name"
         />
         </div>
-        <div class="form-group">
+        <div class="form-group" id="signform">
         <input
           name="email"
           value={email}
@@ -93,7 +96,7 @@ class SignUpFormBase extends Component {
           placeholder="Email Address"
         />
         </div>
-        <div class="form-group">
+        <div class="form-group" id="signform">
         <input
           name="password"
           value={password}
@@ -102,7 +105,7 @@ class SignUpFormBase extends Component {
           placeholder="Password"
         />
         </div>
-        <div class="form-group">
+        <div class="form-group" id="signform">
         <input
           name="passwordConfirmation"
           value={passwordConfirmation}

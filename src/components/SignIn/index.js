@@ -14,6 +14,7 @@ const SignInPage = () => (
     </center>
     <SignInForm />
     <SignUpLink />
+      <div id="signlogo"></div>
   </div>
 );
 
@@ -59,7 +60,7 @@ class SignInFormBase extends Component {
     return (
       <form onSubmit={this.onSubmit}>
         <center>
-        <div className="form-group">
+        <div className="form-group" id="signform">
         <input
           name="email"
           value={email}
@@ -68,7 +69,7 @@ class SignInFormBase extends Component {
           placeholder="Email Address"
         />
         </div>
-        <div className="form-group">
+        <div className="form-group" id="signform">
         <input
           name="password"
           value={password}

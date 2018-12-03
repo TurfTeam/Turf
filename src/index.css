@@ -35,7 +35,7 @@ body {
   align-items:center;
   background-position: center;
   border-radius: 10px;
-  height:550px;
+  height:500px;
   width: 500px;
 }
 
@@ -47,7 +47,7 @@ body {
 }
 
 #signinsubmit {
-  margin-top: 150px;
+  margin-top: 118px;
   border-color: #00cfcf;
   background-color: #00cfcf;
 }
@@ -56,6 +56,22 @@ body {
   margin-top: 20px;
   border-color: #00cfcf;
   background-color: #00cfcf;
+}
+
+#signform {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+#signlogo {
+  background-image: url('../src/img/turf_logo.png');
+  background-repeat: no-repeat;
+  margin-top:20px;
+  height:15vh;
+  background-size: 500px;
+  background-position: center;
+  align-items:center;
+  padding:0 10px;
 }
 
 #link {

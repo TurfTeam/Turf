@@ -167,9 +167,14 @@ class Navigation extends Component {
 
   NavigationSignIn = () => {
     return (
+      <>
+      <NavItem>
+        <NavLink style={{color: 'white', fontWeight: 'bold'}} href={ROUTES.SIGN_UP}>Sign Up</NavLink>
+        </NavItem>
       <NavItem>
         <NavLink style={{color: 'white', fontWeight: 'bold'}} href={ROUTES.SIGN_IN}>Sign In</NavLink>
         </NavItem>
+        </>
     );
   }
 }

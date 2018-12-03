@@ -241,13 +241,15 @@ class HomePage extends Component {
     render() {
         const { posts } = this.state;
         return (
-            <div className="container">
+            <div id="homebackground">
+            <div className="container" style={{paddingTop: "20px"}}>
             <div>
             <Alert color="danger" isOpen={this.state.visible} toggle={this.onReportDismiss}>
               You have reported a post. The administrators will review the post.
             </Alert>
             <CreatePost />
                 {posts.map(this.createPostRender, this)}
+            </div>
             </div>
             </div>
         )

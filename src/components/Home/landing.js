@@ -46,7 +46,7 @@ class LandingPage extends Component {
             <Container>
             <Row>
             <Col>
-              <center><img style={{width: '80%', borderRadius: '50%'}}src={require('./splash.png')} /></center>
+              <center><img style={{width: '50%', borderRadius: '50%'}}src={require('./splash.png')} /></center>
               </Col>
               </Row>
               <br />
@@ -64,8 +64,8 @@ class LandingPage extends Component {
       return (
         <Row>
           <Col>
-            <center><Button outline color="secondary" href={ROUTES.SIGN_IN} size="lg">Sign In</Button>{'  '}
-            <Button outline color="secondary" href={ROUTES.SIGN_UP} size="lg">Sign Up</Button></center>
+            <center><Button outline color="secondary" href={ROUTES.SIGN_IN} size="lg" className="splashbuttons">Sign In</Button>{'  '}
+            <Button outline color="secondary" href={ROUTES.SIGN_UP} size="lg" className="splashbuttons">Sign Up</Button></center>
           </Col>
         </Row>
       );

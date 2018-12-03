@@ -113,6 +113,7 @@ class ManageUsersPage extends Component {
 
     return (
       <Container>
+      <Card>
       <Row>
         <Col>
         <center><h2>Manage Users</h2></center>
@@ -156,6 +157,7 @@ class ManageUsersPage extends Component {
         </Container>
         </TabPane>
       </TabContent>
+      </Container>
       </Container>
     );
   }

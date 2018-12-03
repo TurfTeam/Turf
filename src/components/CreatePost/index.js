@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
+import { Card, Button, CardText, CardBody, Row, Col, Input, Container } from 'reactstrap';
 
 import firebase from 'firebase/app';
 import 'firebase/firestore'
@@ -43,7 +44,8 @@ class CreatePostBase extends Component {
         });
 
         this.setState({ ...INITIAL_STATE });
-        this.props.history.push(ROUTES.HOME);
+        //this.props.history.push(ROUTES.HOME);
+        window.location.reload();
     }).catch((error) => {
         console.log(error)
         this.setState({ error });
@@ -61,23 +63,36 @@ class CreatePostBase extends Component {
         content,
         error,
     } = this.state;
-    
+
     const isInvalid = content === '';
 
     return (
-        <form onSubmit={this.onSubmit}>
-            <textarea
-                name="content"
-                value={content}
-                onChange={this.onChange}
-                placeholder="Enter your post here."
-            ></textarea>
-            <button disabled={isInvalid} type="submit">
-                Create Post
-            </button>
-            {error && <p>{error.message}</p>}
-
-    </form>
+      <Card className="card mt-3">
+        <CardBody>
+          <form onSubmit={this.onSubmit}>
+            <Container>
+              <Row>
+              <Input type="textarea"
+                  style={{width:'100%'}}
+                  name="content"
+                  value={content}
+                  onChange={this.onChange}
+                  placeholder="Enter your post here."
+              />
+              </Row>
+              <hr />
+              <center>
+              <Row>
+              <Button className="text-center" disabled={isInvalid} type="submit">
+                  Create Post
+              </Button>
+              </Row>
+              </center>
+              </Container>
+              {error && <p>{error.message}</p>}
+              </form>
+        </CardBody>
+      </Card>
     );
   }
 }

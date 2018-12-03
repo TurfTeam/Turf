@@ -6,6 +6,8 @@ import {Form, FormGroup, Label, Input, Alert} from 'reactstrap';
 
 import { withAuthorization } from '../Session';
 import { withFirebase } from '../Firebase';
+import * as ROUTES from '../../constants/routes';
+import CreatePost from '../CreatePost';
 
 class HomePage extends Component {
     constructor(props) {
@@ -198,6 +200,7 @@ class HomePage extends Component {
             <Alert color="danger" isOpen={this.state.visible} toggle={this.onReportDismiss}>
               You have reported a post. The administrators will review the post.
             </Alert>
+            <CreatePost />
                 {posts.map(this.createPostRender, this)}
             </div>
             </div>
@@ -245,7 +248,7 @@ class HomePage extends Component {
                   <Col>
                     <Container fluid={true}>
                     <div>
-                    {post.data().comments.length > 0 ? post.data().comments.map(this.createCommentsRender, this) : null} 
+                    {post.data().comments.length > 0 ? post.data().comments.map(this.createCommentsRender, this) : null}
                     </div>
                     <br></br>
                     <Card>

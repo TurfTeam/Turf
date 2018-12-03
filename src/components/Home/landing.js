@@ -4,6 +4,8 @@ import { Container, Row, Col, Collapse, View } from 'reactstrap';
 import { Card, Button, CardText, CardBody } from 'reactstrap';
 import {Form, FormGroup, Label, Input, Alert} from 'reactstrap';
 
+
+import { AuthUserContext } from '../Session';
 import { withAuthorization } from '../Session';
 import { withFirebase } from '../Firebase';
 
@@ -48,15 +50,25 @@ class LandingPage extends Component {
               </Col>
               </Row>
               <br />
-              <Row>
-              <Col>
-               <center><Button outline color="secondary" href={ROUTES.SIGN_IN} size="lg">Sign In</Button>{'  '}
-               <Button outline color="secondary" href={ROUTES.SIGN_UP} size="lg">Sign Up</Button></center>
-              </Col>
-              </Row>
+              <AuthUserContext.Consumer>
+                {authUser =>
+                  authUser ? null : this.renderSignInButtons()
+                }
+              </AuthUserContext.Consumer>
 
             </Container>
         )
+    }
+
+    renderSignInButtons() {
+      return (
+        <Row>
+          <Col>
+            <center><Button outline color="secondary" href={ROUTES.SIGN_IN} size="lg">Sign In</Button>{'  '}
+            <Button outline color="secondary" href={ROUTES.SIGN_UP} size="lg">Sign Up</Button></center>
+          </Col>
+        </Row>
+      );
     }
 
 }

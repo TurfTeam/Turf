@@ -16,7 +16,6 @@ import ManageUsersPage from '../ManageUsers';
 import { Redirect } from 'react-router-dom';
 import * as ROUTES from '../../constants/routes';
 import { withAuthentication } from '../Session';
-import { AuthUserContext } from '../Session';
 
 const App = () => (
   <Router>

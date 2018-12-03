@@ -50,11 +50,13 @@ class ManagePostsPage extends Component {
         return (
             <div id="homebackground">
           <Container>
+          <Card>
           <Row>
             <Col>
               <center><h2 id="signheader" style={{paddingTop: "20px"}}>Manage Posts</h2></center>
             </Col>
           </Row>
+          <Container>
           <hr />
           <Row>
             <Col>
@@ -62,9 +64,11 @@ class ManagePostsPage extends Component {
             </Col>
           </Row>
           <hr />
+          </Container>
           {
             this.state.toggleView ? this.renderTileView() : this.renderListView()
           }
+            </Card>
             </Container>
             </div>
         )

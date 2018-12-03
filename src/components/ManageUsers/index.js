@@ -112,11 +112,12 @@ class ManageUsersPage extends Component {
     const { users, blacklisted } = this.state;
 
     return (
-        <div id="homebackground" style={{paddingTop: "20px"}}>
+        <div id="homebackground" >
       <Container>
+      <Card>
       <Row>
         <Col>
-        <center><h2 id="signheader">Manage Users</h2></center>
+        <center><h2 id="signheader" style={{paddingTop: "20px"}}>Manage Users</h2></center>
 
         </Col>
       </Row>
@@ -158,6 +159,7 @@ class ManageUsersPage extends Component {
         </Container>
         </TabPane>
       </TabContent>
+      </Card>
       </Container>
         </div>
     );

@@ -110,12 +110,15 @@ class HomePage extends Component {
 
             if (doc.data().upvotes && doc.data().downvotes) {
               doc.score = doc.data().upvotes.length - doc.data().downvotes.length;
+            } else {
+              doc.score = 0;
             }
 
             this.state.posts.push(doc);
 
             if ((!postIds && count === querySnapshot.docs.length) || count === postIds.length){
               this.state.loading = false;
+              this.state.posts.sort((p1, p2) => p2.score - p1.score);
               this.setState(this.state);
 
               console.log("DONE: ",this.state);

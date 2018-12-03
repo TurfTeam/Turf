@@ -94,7 +94,7 @@ class Navigation extends Component {
   NavigationAuth = () => {
     return (
       <Nav className="ml-auto" navbar>
-        <AuthUserContext.Consumer>{authUser => authUser.email === "admins@turf.com" ? <> {this.NavigationAdminManageUsers()} {this.NavigationAdminManagePosts()} </> : this.NavigationNotifications(authUser.uid)}</AuthUserContext.Consumer>
+        <AuthUserContext.Consumer>{authUser => authUser.email === "admins@turf.com" ? <> {this.NavigationNotifications(authUser.uid)} {this.NavigationAdminManageUsers()} {this.NavigationAdminManagePosts()} </> : this.NavigationNotifications(authUser.uid)}</AuthUserContext.Consumer>
         <NavItem>
           <SignOutButton />
         </NavItem>

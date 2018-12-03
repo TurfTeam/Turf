@@ -13,7 +13,7 @@ import LandingPage from '../Home/landing';
 import CreatePost from '../CreatePost';
 import ManagePostsPage from '../ManagePosts';
 import ManageUsersPage from '../ManageUsers';
-
+import Redirect from 'react';
 import * as ROUTES from '../../constants/routes';
 import { withAuthentication } from '../Session';
 
@@ -21,10 +21,8 @@ const App = () => (
   <Router>
     <div>
       <Navigation />
-
-      <br />
-
-      <Route exact path={ROUTES.SIGN_UP} component={SignUpPage} />
+      <br />   
+    <Route exact path={ROUTES.SIGN_UP} component={SignUpPage} />
       <Route exact path={ROUTES.SIGN_IN} component={SignInPage} />
       <Route exact path={ROUTES.ACCOUNT} component={AccountPage} />
       <Route exact path={ROUTES.HOME} component={HomePage} />
@@ -32,6 +30,7 @@ const App = () => (
       <Route exact path={ROUTES.NEW_POST} component={CreatePost} />
       <Route exact path={ROUTES.MANAGE_POSTS} component={ManagePostsPage} />
       <Route exact path={ROUTES.MANAGE_USERS} component={ManageUsersPage} />
+      <Route exact path="/" component={HomePage} />
     </div>
   </Router>
 );

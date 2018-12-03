@@ -276,10 +276,10 @@ class HomePage extends Component {
 
     createCommentsRender(comment, index){
       return (
-      <Card key={comment}>
+      <Card key={comment} className="mt-3">
         <CardBody>
         {this.state.comments[comment].content}
-        <div className="text-right">{this.state.comments[comment].timestamp}</div>
+        <div className="text-right" className="mt-3">{this.state.comments[comment].timestamp}</div>
         </CardBody>
       </Card>
     );

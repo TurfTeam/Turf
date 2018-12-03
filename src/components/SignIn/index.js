@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
-import { Button } from 'reactstrap';
+import { Button, Input } from 'reactstrap';
 import { SignUpLink } from '../SignUp';
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';

@@ -7,10 +7,10 @@ import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 
 const SignInPage = () => (
-  <div>
+  <div id="signbox">
     <center>
 
-    <h1>Sign in</h1>
+    <h1 id="signheader">Sign-In</h1>
     </center>
     <SignInForm />
     <SignUpLink />
@@ -79,8 +79,8 @@ class SignInFormBase extends Component {
         </div>
         </center>
         <center>
-        <Button disabled={isInvalid} type="submit">
-          Sign In
+        <Button disabled={isInvalid} type="submit" id="signinsubmit">
+          Submit
         </Button>
         </center>
         <br></br>

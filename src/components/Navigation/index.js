@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 //import { NavLink } from 'react-router-dom';
 import { compose } from 'recompose';
 import {
+  Container,
   Collapse,
   Navbar,
   NavbarToggler,
@@ -77,7 +78,7 @@ class Navigation extends Component {
     return (
       <div>
         <Navbar style={{backgroundColor: '#00CFCF', marginBottom: "0px", paddingBottom: "0px"}} light expand="md">
-            <NavbarBrand style={{color: 'white', fontWeight: 'bold', border: "0"}} href={ROUTES.HOME}><img id="image"></img></NavbarBrand>
+            <NavbarBrand><Container><div id="signlogo" style={{height: '62px', width: '115px'}}></div></Container></NavbarBrand>
           <NavbarToggler style={{color: 'white'}} onClick={this.toggle} />
           <Collapse style={{color: 'white'}} isOpen={this.state.isOpen} navbar>
             <AuthUserContext.Consumer>

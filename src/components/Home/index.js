@@ -34,8 +34,6 @@ class HomePage extends Component {
     toggle(index) {
       console.log(this.state.collapse);
       this.state.newComments[index] = '';
-      console.log(index);
-      console.log(this.state.newComments[index]);
       this.state.collapse[index] = !this.state.collapse[index];
       console.log(this.state.collapse);
       this.setState(this.state);
@@ -69,11 +67,11 @@ class HomePage extends Component {
     loadGeoPosts = () => {
       if ("geolocation" in navigator) {
         const geo_options = {
-          enableHighAccuracy: true, 
-          maximumAge        : 30000, 
+          enableHighAccuracy: true,
+          maximumAge        : 30000,
           timeout           : 27000
         };
-  
+
         navigator.geolocation.getCurrentPosition((pos) => {
           let posts = this.props.firebase.geoPosts(this.props.firebase.geo.point(pos.coords.latitude, pos.coords.longitude), 100, 'position');
           get(posts).then((filterdPosts) => {
@@ -141,11 +139,12 @@ class HomePage extends Component {
           this.state.comments[doc.id] = doc.data();
         });
       });
-
-      this.setState({ posts: [] })
-      this.loadGeoPosts();
       this.state.newComments[post.id] = '';
+      this.state.collapse[post.id] = false;
+      this.setState({ posts: [], comments: this.state.comments, newComments: this.state.newComments, loading: this.state.loading, collapse: this.state.collapse, visible: this.state.visible });
+      this.loadGeoPosts();
 
+      this.state.collapse[post.id] = false;
       this.setState(this.state);
 
       // this.props.firebase.db.collection("posts")
@@ -216,7 +215,9 @@ class HomePage extends Component {
             doc.score = doc.data().upvotes.length - doc.data().downvotes.length;
           }
           posts[postIndex] = doc;
-          this.setState(posts);
+
+          this.state.posts = posts;
+          this.setState(this.state);
         });
       }
     }

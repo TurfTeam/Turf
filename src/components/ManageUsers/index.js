@@ -4,14 +4,27 @@ import { compose } from 'recompose';
 import { withAuthorization } from '../Session';
 import { withFirebase } from '../Firebase';
 
+import { TabContent, TabPane, Nav, NavItem, NavLink, Button } from 'reactstrap';
+import { Container, Card, CardTitle, CardBody, CardText, Row, Col, Alert } from 'reactstrap';
+import classnames from 'classnames';
+
+
+
 class ManageUsersPage extends Component {
     constructor(props) {
       super(props);
 
+      this.toggleTab = this.toggleTab.bind(this);
+      this.toggleActiveView = this.toggleActiveView.bind(this);
+      this.toggleBlacklistView = this.toggleBlacklistView.bind(this);
+
       this.state = {
           loading: false,
           users: [],
-          blacklisted: []
+          blacklisted: [],
+          activeTab: '1',
+          toggleBlacklistView: false,
+          toggleActiveView: false
       };
     }
 
@@ -44,11 +57,12 @@ class ManageUsersPage extends Component {
               }
 
               if(count === querySnapshot.docs.length){
-                this.setState({
-                  users: users,
-                  blacklisted: blacklisted,
-                  loading: false
-                });
+                this.state.users = users;
+                this.state.blacklisted = blacklisted;
+                this.state.loading = false;
+
+                this.setState(this.state);
+
               }
             });
             });
@@ -63,10 +77,24 @@ class ManageUsersPage extends Component {
     componentWillUnmount() {
     }
 
+    toggleTab(tab) {
+      if (this.state.activeTab !== tab) {
+        this.state.activeTab = tab;
+        this.setState(this.state);
+      }
+    }
+
+    toggleBlacklistView() {
+      this.state.toggleBlacklistView = !this.state.toggleBlacklistView;
+      this.setState(this.state);
+    }
+
+    toggleActiveView() {
+      this.state.toggleActiveView = !this.state.toggleActiveView;
+      this.setState(this.state);
+    }
+
     onBlacklist(user){
-      console.log("UID: ",user);
-      console.log("YO");
-      console.log("index: ",this.state.users.indexOf(user));
       this.state.users.splice(this.state.users.indexOf(user),1);
       this.state.blacklisted.push(user);
       this.setState(this.state);
@@ -74,9 +102,6 @@ class ManageUsersPage extends Component {
     }
 
     onRestorePrivileges(user){
-      console.log("UID: ",user);
-      console.log("YO");
-      console.log("index: ",this.state.users.indexOf(user));
       this.state.blacklisted.splice(this.state.blacklisted.indexOf(user),1);
       this.state.users.push(user);
       this.setState(this.state);
@@ -87,44 +112,154 @@ class ManageUsersPage extends Component {
     const { users, blacklisted } = this.state;
 
     return (
-      <div>
-        <h1>Current Users</h1>
-        <ul>
-    {users.map(user => (
-      <li key={user.id}>
-        <span>
-          <strong>ID:</strong> {user.id}
-        </span>
-        <span>
-          <strong>E-Mail:</strong> {user.data().email}
-        </span>
-        <span>
-          <strong>Role:</strong> {user.data().role}
-        </span>
-        <button onClick={() => {this.onBlacklist(user)}}>Blacklist</button>
-      </li>
-    ))}
-  </ul>
-  <h1> Blacklisted Users </h1>
-  <ul>
-  {blacklisted.map(user => (
-    <li key={user.id}>
-      <span>
-        <strong>ID:</strong> {user.id}
-      </span>
-      <span>
-        <strong>E-Mail:</strong> {user.data().email}
-      </span>
-      <span>
-        <strong>Role:</strong> {user.data().role}
-      </span>
-      <button onClick={() => {this.onRestorePrivileges(user)}}>Restore Privileges</button>
-    </li>
-  ))}
-  </ul>
-      </div>
+      <Container>
+      <Row>
+        <Col>
+        <center><h2>Manage Users</h2></center>
+        </Col>
+      </Row>
+      <Nav tabs>
+        <NavItem>
+          <NavLink className={classnames({ active: this.state.activeTab === '1' })} onClick={() => { this.toggleTab('1'); }}>
+            Active
+          </NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink className={classnames({ active: this.state.activeTab === '2' })} onClick={() => { this.toggleTab('2'); }}>
+            Blacklisted
+          </NavLink>
+        </NavItem>
+      </Nav>
+      <TabContent activeTab={this.state.activeTab}>
+        <TabPane tabId="1">
+          <Container>
+          <hr />
+          <Row>
+            <Col>
+              <Button onClick={this.toggleActiveView}>Toggle {this.state.toggleActiveView ? "List View" : "Tile View"}</Button>
+            </Col>
+          </Row>
+          <hr />
+          {this.state.toggleActiveView ? this.renderActiveTileView() : this.renderActiveListView() }
+          </Container>
+        </TabPane>
+        <TabPane tabId="2">
+        <Container>
+        <hr />
+        <Row>
+          <Col>
+            <Button onClick={this.toggleBlacklistView}>Toggle {this.state.toggleBlacklistView ? "List View" : "Tile View"}</Button>
+          </Col>
+        </Row>
+        <hr />
+        {this.state.toggleBlacklistView ? this.renderBlacklistTileView() : this.renderBlacklistListView() }
+        </Container>
+        </TabPane>
+      </TabContent>
+      </Container>
     );
   }
+
+  renderActiveListView = () => {
+    const { users } = this.state;
+    return (
+      <div>
+            {users.map(user => (
+              <Col>
+              <Card>
+                <CardBody>
+                    <CardText>
+                        Email: {user.data().email}
+                        <br />
+                        Role: {user.data().email === "admins@turf.com" ? "admin" : user.data().role}
+                        <br />
+                        Posts: {user.data().posts.length}
+                    </CardText>
+                    <Button onClick={() => {this.onBlacklist(user)}}>Blacklist</Button>
+                    </CardBody>
+              </Card>
+              <br />
+              </Col>
+                ))}
+    </div>
+    )
+  }
+
+  renderActiveTileView = () => {
+    const { users } = this.state;
+    return (
+      <Row>
+            {users.map(user => (
+              <Col xs="6">
+              <Card>
+                <CardBody>
+                    <CardText>
+                    Email: {user.data().email}
+                    <br />
+                    Role: {user.data().email === "admins@turf.com" ? "admin" : user.data().role}
+                    <br />
+                    Posts: {user.data().posts.length}
+                    </CardText>
+                    <Button onClick={() => {this.onBlacklist(user)}}>Blacklist</Button>
+                    </CardBody>
+              </Card>
+              <br />
+              </Col>
+                ))}
+                </Row>
+    )
+  }
+
+  renderBlacklistListView = () => {
+    const { blacklisted } = this.state;
+    return (
+      <div>
+            {blacklisted.map(user => (
+              <Col>
+              <Card>
+                <CardBody>
+                    <CardText>
+                    Email: {user.data().email}
+                    <br />
+                    Role: {user.data().email === "admins@turf.com" ? "admin" : user.data().role}
+                    <br />
+                    Posts: {user.data().posts.length}
+                    </CardText>
+                    <Button onClick={() => {this.onRestorePrivileges(user)}}>Restore Privileges</Button>
+                    </CardBody>
+              </Card>
+              <br />
+              </Col>
+                ))}
+    </div>
+    )
+  }
+
+  renderBlacklistTileView = () => {
+    const { blacklisted } = this.state;
+    return (
+      <Row>
+            {blacklisted.map(user => (
+              <Col xs="6">
+              <Card>
+                <CardBody>
+                    <CardText>
+                    Email: {user.data().email}
+                    <br />
+                    Role: {user.data().email === "admins@turf.com" ? "admin" : user.data().role}
+                    <br />
+                    Posts: {user.data().posts.length}
+                    </CardText>
+                    <Button onClick={() => {this.onRestorePrivileges(user)}}>Restore Privileges</Button>
+                    </CardBody>
+              </Card>
+              <br />
+              </Col>
+                ))}
+                </Row>
+    )
+  }
+
 }
 
 

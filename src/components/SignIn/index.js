@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
-import { Button } from 'reactstrap';
+import { Button, Input } from 'reactstrap';
 import { SignUpLink } from '../SignUp';
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
@@ -38,7 +38,7 @@ class SignInFormBase extends Component {
       .then(() => {
         this.props.firebase.doGetUserRole(email);
         this.setState({ ...INITIAL_STATE });
-        this.props.history.push(ROUTES.LANDING);
+        this.props.history.push(ROUTES.HOME);
       })
       .catch(error => {
         this.setState({ error });
@@ -59,7 +59,7 @@ class SignInFormBase extends Component {
     return (
       <form onSubmit={this.onSubmit}>
         <center>
-        <div class="form-group">
+        <div className="form-group">
         <input
           name="email"
           value={email}
@@ -68,7 +68,7 @@ class SignInFormBase extends Component {
           placeholder="Email Address"
         />
         </div>
-        <div class="form-group">
+        <div className="form-group">
         <input
           name="password"
           value={password}

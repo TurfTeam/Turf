@@ -42,12 +42,16 @@ class Firebase {
     doCreateUserRole = (uid, email) => {
       this.user(uid).set({
         email: email,
-        role: ['user']
+        role: ['user'],
+        notifications: [],
+        posts: [],
+        blacklisted: false
       }).then(function(docRef) {
         localStorage.setItem('r', JSON.stringify(1));
         //console.log("Document written with ID: ", docRef.id);
       })
     }
+
     doGetUserRole = (email) => {
       this.db.collection("users").where("email", "==", email)
       .get()
@@ -81,22 +85,190 @@ class Firebase {
         .catch(function(error){
           console.error("Error writing document: ",error);
         });
+
+        this.doPostNotification(user.id, "You have been blacklisted due to inappropriate behavior. You will no longer be able to post.");
+
       }
 
       doRestoreUserPrivileges = (user) => {
         this.db.collection("blacklist").doc(user.id).delete()
         .then(function() {
           console.log("NO BLAAAAAACKLIST");
-        })
+          })
         .catch(function(error){
           console.error("Error deleting document: ",error);
         });
+
+        this.doPostNotification(user.id, "You have been removed from the blacklist and your user privileges have been restored. You are now able to post.");
+      
       }
+
+      stringGen = (len) => {
+        var text = "";
+
+        var charset = "abcdefghijklmnopqrstuvwxyz0123456789";
+
+        for (var i = 0; i < len; i++)
+        text += charset.charAt(Math.floor(Math.random() * charset.length));
+
+        return text;
+      }
+
+      doReport = (post) => {
+        this.db.collection("posts").doc(post.id).set({
+          comments: post.data().comments,
+          content: post.data().content,
+          created: post.data().created,
+          creator: post.data().creator,
+          reported: true
+        })
+        .then(() => {
+          console.log("REPORTED");
+
+          this.doPostNotification(post.data().creator, "One of your posts has been reported. We will review your content and remove whatever is deemed inappropriate. ");
+        })
+        .catch(error => {
+          console.error("Error reporting post: ",error);
+        });
+      }
+
+      doTimeSinceCreation = (timeStamp) => {
+        var m = new Date();
+        var returnString = "";
+
+        var count = 0;
+        var temp = "";
+
+        var year = 0;
+        var month = 0;
+        var date = 0;
+
+        var hours = 0;
+        var minutes = 0;
+        var seconds = 0;
+
+        var dateString = m.getUTCFullYear() +"/"+ (m.getUTCMonth()+1) +"/"+ m.getUTCDate() + " " + m.getUTCHours() + ":" + m.getUTCMinutes() + ":" + m.getUTCSeconds();
+
+        for(var i = 0; i<timeStamp.length; i++){
+          if(i+1 === timeStamp.length){
+            seconds = temp;
+          }
+          else if(timeStamp[i] === "/"){
+            if(count === 0) year = temp;
+            else if(count === 1) month = temp;
+
+            temp = "";
+            count++;
+          }
+          else if(timeStamp[i] === " "){
+            date = temp;
+
+            temp = "";
+            count++;
+          }
+          else if(timeStamp[i] === ":"){
+            if(count === 3) hours = temp;
+            else if(count === 4) minutes = temp;
+
+            temp = "";
+            count++;
+          }
+          else{
+            temp += timeStamp[i];
+          }
+        }
+
+        if(m.getUTCFullYear() - year > 0){
+          if(m.getUTCMonth() - month < 0) returnString = ((-1*(m.getUTCMonth() - month)).toString()+" months ago");
+          else returnString =  (m.getUTCFullYear() - year).toString()+" years ago";
+        }
+        else if(m.getUTCMonth() - month > 0){
+          if(m.getUTCDate() - date < 0) returnString =  ((-1*(m.getUTCDate - date)).toString()+" days ago");
+          else returnString =  ((m.getUTCMonth() - month).toString()+" months ago");
+        }
+        else if(m.getUTCDate - date > 0){
+          if(m.getUTCHours() - hours < 0) returnString = ((m.getUTCHours()+24)-hours).toString+" hours ago";
+        }
+        else returnString = 0.5;
+
+        console.log("happened: ",returnString);
+      }
+
+      doPostNotification = (uid, noticeText) => {
+        this.db.collection("users").doc(uid)
+        .get()
+        .then(user => {
+          var notifications = user.data().notifications;
+
+          notifications.push(noticeText);
+
+          this.db.collection("users").doc(uid).set({
+            email: user.data().email,
+            role: user.data().role,
+            blacklisted: user.data().blacklisted,
+            posts: user.data().posts,
+            notifications: notifications
+          })
+          .then(() => {
+            console.log("Notification posted");
+          })
+          .catch(error => {
+            console.error("Error pushing notification: ",error);
+          })
+        });
+      }
+
+      doPostComment = (post, comment, uid, timestamp) => {
+        this.doPostNotification(post.data().creator, "A comment has been posted on one of your posts.");
+
+        var commentId = this.stringGen(21);
+        var p_comments = post.data().comments;
+        p_comments.push(commentId);
+
+        this.db.collection("comments").doc(commentId)
+        .set({
+          content: comment,
+          pid: post.id,
+          uid: uid,
+          created: timestamp
+        })
+        .then(function() {
+          console.log("POSTED");
+        })
+        .catch(function(error) {
+          console.error("Error adding comment: ",error);
+        });
+
+        this.db.collection("posts").doc(post.id)
+        .update({
+          reported: post.data().reported,
+          comments: p_comments
+        });
+      }
+
+    doUpvote = (postId, userId) => {
+      this.db.collection(`posts`).doc(postId).update({
+        upvotes: app.firestore.FieldValue.arrayUnion(userId),
+        downvotes: app.firestore.FieldValue.arrayRemove(userId),
+      }).then(() => {
+      }).catch((e) => {
+      });
+    }
+
+    doDownvote = (postId, userId) => {
+      this.db.collection(`posts`).doc(postId).update({
+        downvotes: app.firestore.FieldValue.arrayUnion(userId),
+        upvotes: app.firestore.FieldValue.arrayRemove(userId),
+      }).then(() => {
+      }).catch((e) => {
+      });
+    }
 
     user = uid => this.db.collection(`users`).doc(uid);
     users = () => this.db.collection(`users`);
 
     posts = () => this.db.collection(`posts`);
+    post = postId => this.db.collection(`posts`).doc(postId);
 }
 
 export default Firebase;

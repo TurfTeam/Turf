@@ -116,3 +116,19 @@ input[type=name] {
   margin: 8px 0;
   box-sizing: border-box;
 }
+
+.score {
+  margin: 0 6px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.active-vote {
+  color: orange;
+}
+
+.unactive-vote {
+  color: black;
+}

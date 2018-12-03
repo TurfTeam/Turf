@@ -4,6 +4,7 @@ import { compose } from 'recompose';
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 import { Button } from 'reactstrap';
+
 const SignUpPage = () => (
   <center>
   <div id="signbox">
@@ -35,21 +36,12 @@ class SignUpFormBase extends Component {
     this.props.firebase
       .doCreateUserWithEmailAndPassword(email, password)
       .then(authUser => {
-        /*this.props.firebase
-          .user(authUser.user.uid)
-          .set({
-            uid: authUser.user.uid,
-            email: email,
-            role: ['user']
-          });*/
         authUser.user.updateProfile({
           displayName: name
         }).then(() => {
-          console.log(authUser.user)
           this.props.firebase.doCreateUserRole(authUser.user.uid, email);
           this.setState({ ...INITIAL_STATE });
-          this.props.history.push(ROUTES.LANDING);
-
+          this.props.history.push(ROUTES.HOME);
         }).catch((error) => {
           this.setState({ error });
         });

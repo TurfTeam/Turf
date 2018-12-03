@@ -81,22 +81,26 @@ class Firebase {
         })
         .then(function() {
           console.log("BLAAAAACKLIST");
-          this.doPostNotification(user.id, "You have been blacklisted due to inappropriate behavior. You will no longer be able to post.");
         })
         .catch(function(error){
           console.error("Error writing document: ",error);
         });
+
+        this.doPostNotification(user.id, "You have been blacklisted due to inappropriate behavior. You will no longer be able to post.");
+
       }
 
       doRestoreUserPrivileges = (user) => {
         this.db.collection("blacklist").doc(user.id).delete()
         .then(function() {
           console.log("NO BLAAAAAACKLIST");
-          this.doPostNotification(user.id, "You have been removed from the blacklist and your user privileges have been restored. You are now able to post.");
-        })
+          })
         .catch(function(error){
           console.error("Error deleting document: ",error);
         });
+
+        this.doPostNotification(user.id, "You have been removed from the blacklist and your user privileges have been restored. You are now able to post.");
+      
       }
 
       stringGen = (len) => {

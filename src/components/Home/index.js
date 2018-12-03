@@ -6,6 +6,10 @@ import {Form, FormGroup, Label, Input, Alert} from 'reactstrap';
 
 import { withAuthorization } from '../Session';
 import { withFirebase } from '../Firebase';
+
+import firebase from 'firebase/app';
+import 'firebase/firestore'
+
 import * as ROUTES from '../../constants/routes';
 import CreatePost from '../CreatePost';
 
@@ -88,12 +92,7 @@ class HomePage extends Component {
     }
 
     onSubmitComment = (post) => {
-      var newComment = {
-        comment: this.state.newComments[post.id],
-        timeStamp: "just now"
-      }
-      post.data().comments[post.id] = newComment;
-      this.props.firebase.doPostComment(post, this.state.newComments[post.id], JSON.parse(localStorage.getItem("authUser")).uid);
+      this.props.firebase.doPostComment(post, this.state.newComments[post.id], JSON.parse(localStorage.getItem("authUser")).uid, firebase.firestore.Timestamp.now());
       this.props.firebase.db.collection("comments")
       .get()
       .then((querySnapshot) => {
@@ -279,7 +278,7 @@ class HomePage extends Component {
       <Card key={comment} className="mt-3">
         <CardBody>
         {this.state.comments[comment].content}
-        <div className="text-right" className="mt-3">{this.state.comments[comment].timestamp}</div>
+        <div className="text-right" className="mt-3">{this.state.comments[comment].created.toDate().toString()}</div>
         </CardBody>
       </Card>
     );

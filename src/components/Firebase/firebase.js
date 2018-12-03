@@ -214,13 +214,8 @@ class Firebase {
         });
       }
 
-      doPostComment = (post, comment, uid) => {
-        var m = new Date();
-        var dateString = m.getUTCFullYear() +"/"+ (m.getUTCMonth()+1) +"/"+ m.getUTCDate() + " " + (m.getUTCHours()+19) + ":" + m.getUTCMinutes() + ":" + m.getUTCSeconds();
-        console.log("datestamp: ",dateString);
-
+      doPostComment = (post, comment, uid, timestamp) => {
         this.doPostNotification(post.data().creator, "A comment has been posted on one of your posts.");
-
 
         var commentId = this.stringGen(21);
         var p_comments = post.data().comments;
@@ -231,7 +226,7 @@ class Firebase {
           content: comment,
           pid: post.id,
           uid: uid,
-          timestamp: dateString
+          created: timestamp
         })
         .then(function() {
           console.log("POSTED");

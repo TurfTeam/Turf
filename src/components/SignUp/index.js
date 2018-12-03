@@ -10,8 +10,6 @@ const SignUpPage = () => (
   <div id="signbox">
     <h1 id="signheader">Sign-Up</h1>
     <SignUpForm />
-      <div id="signlogo">
-      </div>
   </div>
 
   </center>

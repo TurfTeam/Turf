@@ -23,6 +23,9 @@ import { withFirebase } from '../Firebase';
 
 import * as ROUTES from '../../constants/routes';
 import { AuthUserContext } from '../Session';
+
+import { withRouter } from 'react-router-dom';
+import { withAuthorization } from '../Session';
 import SignOutButton from '../SignOut';
 
 
@@ -78,7 +81,7 @@ class Navigation extends Component {
     return (
       <div>
         <Navbar style={{backgroundColor: '#00CFCF', marginBottom: "0px", paddingBottom: "0px"}} light expand="md">
-            <NavbarBrand><Container><div id="signlogo" style={{height: '62px', width: '115px'}}></div></Container></NavbarBrand>
+            <NavbarBrand><Container ><a href={ROUTES.LANDING}><div id="signlogo" style={{height: '62px', width: '115px'}}></div></a></Container></NavbarBrand>
           <NavbarToggler style={{color: 'white'}} onClick={this.toggle} />
           <Collapse style={{color: 'white'}} isOpen={this.state.isOpen} navbar>
             <AuthUserContext.Consumer>

@@ -14,7 +14,6 @@ const SignInPage = () => (
     </center>
     <SignInForm />
     <SignUpLink />
-      <div id="signlogo"></div>
   </div>
 );
 

@@ -6,8 +6,8 @@ import * as ROUTES from '../../constants/routes';
 import { Button } from 'reactstrap';
 const SignUpPage = () => (
   <center>
-  <div>
-    <h1>Sign up</h1>
+  <div id="signbox">
+    <h1 id="signheader">Sign-Up</h1>
     <SignUpForm />
   </div>
   </center>
@@ -121,8 +121,8 @@ class SignUpFormBase extends Component {
         </div>
         </center>
         <center>
-        <Button disabled={isInvalid} type="submit">
-          Sign Up
+        <Button disabled={isInvalid} type="submit" id="signupsubmit">
+          Submit
         </Button>
         </center>
         {error && <p>{error.message}</p>}
@@ -134,7 +134,7 @@ class SignUpFormBase extends Component {
 const SignUpLink = () => (
   <p>
     <center>
-    Don't have an account? <Link to={ROUTES.SIGN_UP}>Sign Up</Link>
+    Don't have an account? <Link to={ROUTES.SIGN_UP} id="link">Sign Up</Link>
     </center>
   </p>
 );

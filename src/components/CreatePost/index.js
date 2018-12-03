@@ -28,6 +28,24 @@ class CreatePostBase extends Component {
   }
 
   onSubmit = () => {
+    if ("geolocation" in navigator) {
+      const geo_options = {
+        enableHighAccuracy: true, 
+        maximumAge        : 30000, 
+        timeout           : 27000
+      };
+
+      navigator.geolocation.getCurrentPosition((pos) => {
+        this.doNewPost(this.props.firebase.geo.point(pos.coords.latitude, pos.coords.longitude));
+      }, (e) => {
+        this.doNewPost(this.props.firebase.geo.point(29.6516, -82.3248));
+      }, geo_options);
+    } else {
+      this.doNewPost(this.props.firebase.geo.point(29.6516, -82.3248));
+    }
+  }
+
+  doNewPost = (pos) => {
     const { content, error } = this.state;
     const authUser = JSON.parse(localStorage.getItem('authUser'));
 
@@ -44,6 +62,7 @@ class CreatePostBase extends Component {
             comments: [],
             upvotes: [],
             downvotes: [],
+            position: pos.data,
         }).then((post) => {
             console.log(this.props.firebase.db.FieldValue);
             console.log(post);

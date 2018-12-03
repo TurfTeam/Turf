@@ -2,6 +2,8 @@ import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 
+import * as geofirex from 'geofirex';
+
 const config = {
     apiKey: "AIzaSyA6WokB6mgmPp-j9EjFf5hgPuTyNcWS5Fg",
     authDomain: "turf-webapps.firebaseapp.com",
@@ -21,6 +23,8 @@ class Firebase {
         this.db.settings({
           timestampsInSnapshots: true
         });
+
+        this.geo = geofirex.init(app);
     }
 
     doCreateUserWithEmailAndPassword = (email, password) =>
@@ -269,6 +273,8 @@ class Firebase {
 
     posts = () => this.db.collection(`posts`);
     post = postId => this.db.collection(`posts`).doc(postId);
+
+    geoPosts = (center, radius, field) => this.geo.collection(`posts`).within(center, radius, field);
 }
 
 export default Firebase;

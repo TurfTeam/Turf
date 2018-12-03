@@ -4,6 +4,8 @@ import { Container, Row, Col, Collapse } from 'reactstrap';
 import { Card, Button, CardText, CardBody } from 'reactstrap';
 import {Form, FormGroup, Label, Input, Alert} from 'reactstrap';
 
+import { get } from 'geofirex';
+
 import { withAuthorization } from '../Session';
 import { withFirebase } from '../Firebase';
 
@@ -61,30 +63,69 @@ class HomePage extends Component {
             this.state.comments[doc.id] = doc.data();
           });
         });
+        this.loadGeoPosts();
+    }
 
-        this.props.firebase.posts().get().then((querySnapshot) => {
-            var count = 0;
-
-            querySnapshot.docs.forEach(doc => {
-              count++;
-
-              this.state.collapse[doc.id] = false;
-
-              if (doc.data().upvotes && doc.data().downvotes) {
-                doc.score = doc.data().upvotes.length - doc.data().downvotes.length;
-              }
-
-              this.state.posts.push(doc);
-
-              if(count === querySnapshot.docs.length){
-                this.state.loading = false;
-                this.setState(this.state);
-
-                console.log("DONE: ",this.state);
-              }
-
-            });
+    loadGeoPosts = () => {
+      if ("geolocation" in navigator) {
+        const geo_options = {
+          enableHighAccuracy: true, 
+          maximumAge        : 30000, 
+          timeout           : 27000
+        };
+  
+        navigator.geolocation.getCurrentPosition((pos) => {
+          let posts = this.props.firebase.geoPosts(this.props.firebase.geo.point(pos.coords.latitude, pos.coords.longitude), 100, 'position');
+          get(posts).then((filterdPosts) => {
+            this.loadAllPosts(filterdPosts.map((p) => p.id));
+          }).catch((err) => {
+            this.loadAllPosts(null);
+          });
+        }, (e) => {
+          let posts = this.props.firebase.geoPosts(this.props.firebase.geo.point(29.6516, -82.3248));
+          get(posts).then((filterdPosts) => {
+            this.loadAllPosts(filterdPosts.map((p) => p.id));
+          }).catch((err) => {
+            this.loadAllPosts(null);
+          });
+        }, geo_options);
+      } else {
+        let posts = this.props.firebase.geoPosts(this.props.firebase.geo.point(29.6516, -82.3248));
+        get(posts).then((filterdPosts) => {
+          this.loadAllPosts(filterdPosts.map((p) => p.id));
+        }).catch((err) => {
+          this.loadAllPosts(null);
         });
+      }
+    }
+
+    loadAllPosts = (postIds) => {
+      console.log(typeof(postIds));
+      this.props.firebase.posts().get().then((querySnapshot) => {
+        var count = 0;
+        this.state.posts = [];
+        querySnapshot.docs.forEach(doc => {
+          if (!postIds || postIds.indexOf(doc.id) > -1) {
+            count++;
+
+            this.state.collapse[doc.id] = false;
+
+            if (doc.data().upvotes && doc.data().downvotes) {
+              doc.score = doc.data().upvotes.length - doc.data().downvotes.length;
+            }
+
+            this.state.posts.push(doc);
+
+            if ((!postIds && count === querySnapshot.docs.length) || count === postIds.length){
+              this.state.loading = false;
+              this.setState(this.state);
+
+              console.log("DONE: ",this.state);
+            }
+          }
+        });
+        console.log(this.state.posts);
+      });
     }
 
     componentWillMount() {
@@ -101,14 +142,20 @@ class HomePage extends Component {
         });
       });
 
-      this.props.firebase.db.collection("posts")
-      .get()
-      .then((querySnapshot) => {
-        this.state.newComments[post.id] = '';
-        this.state.posts = querySnapshot.docs;
+      this.setState({ posts: [] })
+      this.loadGeoPosts();
+      this.state.newComments[post.id] = '';
 
-        this.setState(this.state);
-      });
+      this.setState(this.state);
+
+      // this.props.firebase.db.collection("posts")
+      // .get()
+      // .then((querySnapshot) => {
+      //   this.state.newComments[post.id] = '';
+      //   this.state.posts = querySnapshot.docs;
+
+      //   this.setState(this.state);
+      // });
 
     }
 

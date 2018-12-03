@@ -158,6 +158,12 @@ input[type=name] {
   box-sizing: border-box;
 }
 
+.landing {
+    background: url("../src/img/turf_splash.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+ }
+
 .score {
   margin: 0 6px;
 }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
-import { Card, Button, CardText, CardBody, Row, Col, Input, Container } from 'reactstrap';
+import { Card, Button, CardText, CardBody, Row, Col, Input, Container, Alert } from 'reactstrap';
 
 import firebase from 'firebase/app';
 import 'firebase/firestore'
@@ -15,6 +15,7 @@ import * as ROUTES from '../../constants/routes';
 const INITIAL_STATE = {
   content: '',
   error: null,
+  visible: false
 };
 
 class CreatePostBase extends Component {
@@ -22,36 +23,55 @@ class CreatePostBase extends Component {
     super(props);
 
     this.state = { ...INITIAL_STATE };
+
+    this.onDismiss = this.onDismiss.bind(this);
   }
 
-  onSubmit = event => {
+  onSubmit = () => {
     const { content, error } = this.state;
     const authUser = JSON.parse(localStorage.getItem('authUser'));
 
-    this.props.firebase.posts().add({
-        content,
-        reported: false,
-        creator: authUser.uid,
-        created: firebase.firestore.Timestamp.now(),
-        comments: [],
-        upvotes: [],
-        downvotes: [],
-    }).then((post) => {
-        console.log(this.props.firebase.db.FieldValue);
-        console.log(post);
-        this.props.firebase.user(authUser.uid).update({
-            posts: firebase.firestore.FieldValue.arrayUnion(post.id),
+    this.props.firebase.db.collection("blacklist").doc(authUser.uid)
+    .get()
+    .then(querySnapshot => {
+      console.log("query.snapshot: ",querySnapshot.data());
+      if(querySnapshot.data()=== undefined || querySnapshot.data() === null){
+        this.props.firebase.posts().add({
+            content,
+            reported: false,
+            creator: authUser.uid,
+            created: firebase.firestore.Timestamp.now(),
+            comments: [],
+            upvotes: [],
+            downvotes: [],
+        }).then((post) => {
+            console.log(this.props.firebase.db.FieldValue);
+            console.log(post);
+            this.props.firebase.user(authUser.uid).update({
+                posts: firebase.firestore.FieldValue.arrayUnion(post.id),
+            });
+
+            this.setState({ ...INITIAL_STATE });
+            //this.props.history.push(ROUTES.HOME);
+            window.location.reload();
+        }).catch((error) => {
+            console.log(error)
+            this.setState({ error });
         });
 
-        this.setState({ ...INITIAL_STATE });
-        //this.props.history.push(ROUTES.HOME);
-        window.location.reload();
-    }).catch((error) => {
-        console.log(error)
-        this.setState({ error });
+        //event.preventDefault();
+      }
+      else{
+        console.log("display alert");
+        this.state.visible = true;
+        this.setState(this.state);
+      }
     });
+  }
 
-    event.preventDefault();
+  onDismiss() {
+    this.state.visible = false;
+    this.setState(this.state);
   }
 
   onChange = event => {
@@ -67,9 +87,13 @@ class CreatePostBase extends Component {
     const isInvalid = content === '';
 
     return (
+      <>
+      <Alert color="danger" isOpen={this.state.visible} toggle={this.onDismiss}>
+        Your posting privileges have been removed temporarily.
+      </Alert>
       <Card className="card mt-3">
         <CardBody>
-          <form onSubmit={this.onSubmit}>
+          <form >
             <Container>
               <Row>
               <Input type="textarea"
@@ -83,7 +107,7 @@ class CreatePostBase extends Component {
               <hr />
               <center>
               <Row>
-              <Button className="text-center" disabled={isInvalid} type="submit">
+              <Button className="text-center" disabled={isInvalid} onClick={this.onSubmit}>
                   Create Post
               </Button>
               </Row>
@@ -93,6 +117,7 @@ class CreatePostBase extends Component {
               </form>
         </CardBody>
       </Card>
+      </>
     );
   }
 }

@@ -44,6 +44,16 @@ body {
   height: 500px;
 }
 
+#signbox2 {
+  margin-top: -20px;
+  background-color: white;
+  align-items:center;
+  background-position: center;
+  border-radius: 0px;
+  height: 650px;
+}
+
+
 #signheader {
   font-size: 40px;
   color: #707070;
@@ -188,4 +198,18 @@ input[type=name] {
 
 .navbar {
   margin-bottom: 0px;
+}
+.account h1 {
+  display:inline;
+  font-weight: bold;
+  font-size: 32px;
+  text-align: center;
+  padding-right: 6px
+
+}
+.account h2 {
+  display:inline;
+  padding-top: 15px;
+  font-weight: lighter;
+  font-size: 30px
 }

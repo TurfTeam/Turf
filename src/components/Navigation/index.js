@@ -102,6 +102,11 @@ class Navigation extends Component {
         <NavItem>
           <SignOutButton />
         </NavItem>
+        <NavItem>
+        <a href="#">
+        <NavLink style={{color: 'white', fontWeight: 'bold'}} href={ROUTES.ACCOUNT}>Account</NavLink>
+        </a>
+        </NavItem>
       </Nav>
     );
   }

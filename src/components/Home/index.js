@@ -129,6 +129,14 @@ class HomePage extends Component {
       });
     }
 
+    filterHot = () => {
+
+    }
+
+    filterNew = () => {
+
+    }
+
     componentWillMount() {
         // this.props.firebase.posts().off();
     }
@@ -263,6 +271,9 @@ class HomePage extends Component {
       let currentUser = JSON.parse(localStorage.getItem("authUser")).uid;
       let isUp = !!post.data().upvotes && post.data().upvotes.includes(currentUser);
       let isDown = !!post.data().downvotes && post.data().downvotes.includes(currentUser);
+      let postToDate = post.data().created.toDate();
+      let curToDate = firebase.firestore.Timestamp.now().toDate();
+
       return (
       <Card className="card mt-3" key={post.id} id={post.id}>
           <CardBody>
@@ -294,6 +305,16 @@ class HomePage extends Component {
                     </span>
                   </Col>
               </Row>
+              <Row id="commentRow">
+                  <span id = "icon">
+                      <i className="fas fa-clock"></i>
+                  </span>
+                  <Col xs="2" id="time">
+                      { this.printDate(curToDate, postToDate)}
+                  </Col>
+                  <Col>
+              </Col>
+              </Row>
               <Row>
                   <Collapse className="full-width" isOpen={this.state.collapse[post.id]}>
                   <hr />
@@ -311,7 +332,7 @@ class HomePage extends Component {
                         <Input type="textarea" name="comment" value={this.state.newComments[post.id]} onChange={this.onChangeComment.bind(this, post.id)} placeholder="Comment" />
                       </FormGroup>
 
-                      <Button onClick={() => this.onSubmitComment(post)}>Submit</Button>
+                      <Button id="orangebtn" onClick={() => this.onSubmitComment(post)}>Submit</Button>
                     </Form>
                     </CardBody>
                     </Card>
@@ -326,12 +347,53 @@ class HomePage extends Component {
     );
     }
 
+    printDate(curToDate, postToDate) {
+        let postMinute = postToDate.getMinutes();
+        let curMinute = curToDate.getMinutes();
+        let postHour = postToDate.getHours();
+        let curHour = firebase.firestore.Timestamp.now().toDate().getHours();
+        let curDate = firebase.firestore.Timestamp.now().toDate().getDate();
+        let postDate = postToDate.getDate();
+        let postDay = postToDate.getDay();
+        let curDay = postToDate.getDay();
+        let inWeek = ((curDay - postDay >= 0) && (curDate - postDate < 7));
+        let weekday=new Array(7);
+        weekday[0]="Monday";
+        weekday[1]="Tuesday";
+        weekday[2]="Wednesday";
+        weekday[3]="Thursday";
+        weekday[4]="Friday";
+        weekday[5]="Saturday";
+        weekday[6]="Sunday";
+
+        if(postDate == curDate) {
+            if((curHour - postHour) == 0) {
+                return ((curMinute - postMinute)) + " Min";
+            }
+            else if((curHour - postHour == 1) && (curMinute - postMinute < 0)) {
+                return (((curMinute+60) - postMinute)) + " Min";
+            }
+            else {
+                return ((curHour - postHour)) + " Hr";
+            }
+        }
+        else if(inWeek) {
+            return (weekday[postDay]);
+        }
+        else {
+            return (postToDate.toLocaleDateString());
+        }
+    }
+
     createCommentsRender(comment, index){
       return (
       <Card key={comment} className="mt-3">
         <CardBody>
         {this.state.comments[comment].content}
-        <div className="text-right" className="mt-3">{this.state.comments[comment].created.toDate().toString()}</div>
+        <div className="text-right" className="mt-3">
+            {this.printDate(firebase.firestore.Timestamp.now().toDate(), this.state.comments[comment].created.toDate())}
+
+            </div>
         </CardBody>
       </Card>
     );
